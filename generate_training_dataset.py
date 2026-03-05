@@ -30,18 +30,16 @@ def create_rag_prompt(example):
     target_chunk_label = chunk_label[target_index] if is_answerable else 'none'
 
     # 프롬프트 작성
-    prompt = f"""Pick the most plausible context for the given question,
-and then print the exact quote from the context that answers the question in JSON format. 
+    prompt = f"""Pick the most plausible context for the given question, and then print the exact quote from the context that answers the question in JSON format. 
 ("target_chunk", and "exact_quote" are the keys you need to print)
 If there is no quote for the question, print "target_chucnk" and "exact_quote" as "none".
-[Question] {question}\n
+
+[Question] {question}
+
 [Context A] {chunks[0]}
 [Context B] {chunks[1]}
 [Context C] {chunks[2]}
 """
-    
-    print(prompt)
-    print('---')
     
     expected_output = {
         "target_chunk": target_chunk_label,
