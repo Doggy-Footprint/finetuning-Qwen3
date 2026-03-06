@@ -1,3 +1,6 @@
 .DS_Store
 .vscode
-rag_squad_dataset.jsonl
+test_rag_squad.jsonl
+train_rag_squad.jsonl
+results_sft_r8/
+saved_model*/

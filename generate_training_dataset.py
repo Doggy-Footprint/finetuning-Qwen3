@@ -2,6 +2,8 @@ import json
 import random
 from datasets import load_dataset
 
+SAMPLE_SIZE = 20
+
 # SQuAD v2.0 데이터 로딩
 print('SQuAD v2.0 데이터 로딩')
 dataset = load_dataset('squad_v2', split='train')
@@ -53,18 +55,24 @@ If there is no quote for the question, print "target_chucnk" and "exact_quote" a
 
 # 샘플 데이터 변환
 print('데이터 처리 중')
-sample_size = 1
+sample_size = SAMPLE_SIZE
 rag_dataset = []
 
 for i in range(sample_size):
     rag_dataset.append(create_rag_prompt(dataset[i]))
 
-# 저장
-print('데이터 저장 중')
-output_file = 'rag_squad_dataset.jsonl'
-with open(output_file, 'w', encoding='utf-8') as f:
-    for item in rag_dataset:
-        f.write(json.dumps(item, ensure_ascii=False) + '\n')
+random.shuffle(rag_dataset)
+
+# 95:5 비율로 Train / Test 분할
+split_idx = int(len(rag_dataset) * 0.95)
+train_dataset = rag_dataset[:split_idx]
+test_dataset = rag_dataset[split_idx:]
+
+# 각각 파일로 저장
+with open("train_rag_squad.jsonl", "w", encoding="utf-8") as f:
+    for item in train_dataset: f.write(json.dumps(item, ensure_ascii=False) + "\n")
+
+with open("test_rag_squad.jsonl", "w", encoding="utf-8") as f:
+    for item in test_dataset: f.write(json.dumps(item, ensure_ascii=False) + "\n")
 
 print('데이터 저장 완료')
-
