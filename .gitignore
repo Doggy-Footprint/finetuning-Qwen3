@@ -6,3 +6,4 @@ saved_model*/
 results_*/
 **/test_data_*
 **/train_data_*
+evaluation_results.json
