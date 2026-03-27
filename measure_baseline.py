@@ -5,7 +5,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_dataset
 from tqdm import tqdm
 
-SAMPLE_SIZE = 10000
+SAMPLE_SIZE = 1000
 
 # 1. M2 Mac을 위한 MPS(Metal Performance Shaders) 디바이스 설정
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
@@ -89,6 +89,7 @@ for data in tqdm(sample_dataset, desc="Evaluating"):
     # SQuAD v2.0은 정답이 없는 경우 answers['text']가 빈 배열입니다.
     true_answers = data['answers']['text']
     is_impossible = not true_answers
+    if not is_impossible: continue # only use unanswerable cases
 
     model_answer = generate_answer(context, question)
     model_answer_normalized = normalize_text(model_answer)
@@ -97,7 +98,7 @@ for data in tqdm(sample_dataset, desc="Evaluating"):
     if is_impossible:
         total_unanswerable += 1
         # 답변 불가능 질문에 "i don't know"가 포함되어 있으면 정답으로 처리
-        if "i don't know" in model_answer_normalized:
+        if normalize_text("i don't know") in model_answer_normalized:
             unanswerable_correct += 1
     else:
         total_answerable += 1

@@ -4,3 +4,5 @@ test_rag_squad.jsonl
 train_rag_squad.jsonl
 saved_model*/
 results_*/
+**/test_data_*
+**/train_data_*
