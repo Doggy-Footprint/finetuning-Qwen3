@@ -1,11 +1,14 @@
 import argparse
 import torch
-from datasets import load_dataset
+from datasets import load_dataset, concatenate_datasets
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import LoraConfig, get_peft_model
 from trl import SFTTrainer, SFTConfig
+import random
 
 import os
+
+SEED = 42
 
 # 현재 파일의 디렉토리 경로를 루트로 설정
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -15,7 +18,7 @@ LORA_ALPHA = 32
 LEARNING_RATE = 2e-4
 NUM_EPOCHS = 1
 
-DATASET_SIZE=2500
+DATASET_SIZE=2000
 
 def get_device():
     """M2 Mac(MPS) 또는 CUDA GPU 자동 감지"""
@@ -67,11 +70,18 @@ def main():
     print("📦 SQuAD 2.0 데이터셋을 불러옵니다...")
     raw_dataset = load_dataset("squad_v2", split="train")
     
-    # 대답 불가 데이터만 필터링
-    impossible_data = raw_dataset.filter(lambda x: len(x["answers"]["text"]) == 0).select(range(DATASET_SIZE))
-    
+    # 학습 데이터 사이즈 조절
+    answerable = raw_dataset.filter(lambda x: len(x["answers"]["text"]) > 0)
+    unanswerable = raw_dataset.filter(lambda x: len(x["answers"]["text"]) == 0)
+
+    half_size = DATASET_SIZE // 2
+    sampled_answerable = answerable.shuffle(seed=SEED).select(range(half_size))
+    sampled_unanswerable = unanswerable.shuffle(seed=SEED).select(range(half_size))
+    concat_dataset = concatenate_datasets([sampled_answerable, sampled_unanswerable])
+    dataset = concat_dataset.shuffle(seed=SEED)
+
     # 95% Train / 5% Test 스플릿
-    split_data = impossible_data.train_test_split(test_size=0.05, seed=42)
+    split_data = dataset.train_test_split(test_size=0.05, seed=SEED)
     
     # 나중을 위해 원본 데이터 저장
     split_data["train"].to_json(f"{ROOT_DIR}/train_data_squad.jsonl")
@@ -82,13 +92,23 @@ def main():
 
     # SFT용 프롬프트 포맷팅 함수 (템플릿 방식 호환)
     def format_dataset(example):
+        ans_text = ''
+        ref_text = ''
+
+        if len(example["answers"]["text"]) == 0:
+            ans_text = TARGET_ANSWER
+            ref_text = ''
+        else: # TODO: 첫 번째 답을 정답으로 쓰는것, ans/ref가 같은게 문제가 되진 않을지 체크
+            ans_text = example["answers"]["text"][0]
+            ref_text = ans_text
+
         messages = [
             {"role": "system", "content": SYSTEM_PROMPT.format(target=TARGET_ANSWER)},
             {"role": "user", "content": f"[context]: {example['context']}\n[question]: {example['question']}"},
-            {"role": "assistant", "content": f"[answer]: {TARGET_ANSWER}\n[reference]: "}
+            {"role": "assistant", "content": f"[answer]: {ans_text}\n[reference]: {ref_text}"}
         ]
         # tokenizer를 이용해 ChatML 포맷의 단일 텍스트로 변환
-        formatted_text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False)
+        formatted_text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False, enable_thinking=False)
         return {"text": formatted_text}
 
     # map 함수를 사용해 전처리하고 기존 컬럼은 모두 삭제 (SFTTrainer 호환성 확보)
@@ -108,7 +128,10 @@ def main():
         gradient_accumulation_steps=4,
         gradient_checkpointing=True,
         num_train_epochs=NUM_EPOCHS, # 첫 테스트용
-        learning_rate=2e-4, # 강한 학습률
+        learning_rate=1e-4,
+        warmup_ratio=0.03,
+        lr_scheduler_type="cosine",
+        neftune_noise_alpha=5.0,
         optim="adamw_torch",
         logging_steps=10,
         use_mps_device=(device == "mps"),
