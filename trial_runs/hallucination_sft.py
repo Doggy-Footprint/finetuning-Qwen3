@@ -15,7 +15,7 @@ LORA_ALPHA = 32
 LEARNING_RATE = 2e-4
 NUM_EPOCHS = 1
 
-DATASET_SIZE=1000
+DATASET_SIZE=2500
 
 def get_device():
     """M2 Mac(MPS) 또는 CUDA GPU 자동 감지"""
