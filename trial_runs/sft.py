@@ -17,9 +17,8 @@ from trl import SFTTrainer, SFTConfig
 SEED = 42
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_ID = "Qwen/Qwen3-0.6B"
-LORA_R = 16
-LORA_ALPHA = 32
-LEARNING_RATE = 1e-4
+LORA_R = 32
+LEARNING_RATE = 2e-5 # local minimum에서 튀는 현상 방지를 위해 조금 내림 (2e-4에서)
 WARMUP_RATIO = 0.03
 
 LORA_PATH = f"{ROOT_DIR}/saved_model_squad_SFT_r{LORA_R}"
@@ -27,8 +26,8 @@ TEST_DATA_PATH = f"{ROOT_DIR}/test_data_squad.jsonl"
 TRAIN_DATA_PATH = f"{ROOT_DIR}/train_data_squad.jsonl"
 RESULT_SAVE_PATH = f"{ROOT_DIR}/evaluation_comparison_f1_results.json"
 
-TRAIN_SIZE = 600
-TEST_SIZE = 300
+TRAIN_SIZE = 400
+TEST_SIZE = 400
 NUM_EPOCHS = 1
 
 TARGET_SENTENCE = "I cannot answer this question based on the provided context."
@@ -95,7 +94,7 @@ def run_training():
 
     lora_config = LoraConfig(
         r=LORA_R, 
-        lora_alpha=LORA_ALPHA,
+        lora_alpha=2 * LORA_R,
         target_modules="all-linear", 
         lora_dropout=0.05,
         bias="none",
@@ -143,7 +142,7 @@ def run_training():
     training_args = SFTConfig(
         output_dir=f"{ROOT_DIR}/results_squad_sft_r{LORA_R}",
         per_device_train_batch_size=2, 
-        gradient_accumulation_steps=4,
+        gradient_accumulation_steps=8,
         gradient_checkpointing=True,
         num_train_epochs=NUM_EPOCHS,
         learning_rate=LEARNING_RATE,
@@ -210,9 +209,9 @@ def run_evaluation():
                 })
 
     # 시간 절약을 위해 샘플링 (필요시 개수 조정)
-    unanswerable_samples = unanswerable_samples[:100]
-    sample_size = min(100, len(answerable_samples))
-    answerable_samples = random.sample(answerable_samples, sample_size)
+    # unanswerable_samples = unanswerable_samples[:100]
+    # sample_size = min(100, len(answerable_samples))
+    # answerable_samples = random.sample(answerable_samples, sample_size)
 
     test_samples = unanswerable_samples + answerable_samples
     print(f"총 {len(test_samples)}개의 테스트 데이터를 평가합니다. (응답 불가 {len(unanswerable_samples)} + 응답 가능 {len(answerable_samples)})")

@@ -1,0 +1,1680 @@
+{
+    "summary_metrics": {
+        "unanswerable": {
+            "base_f1": 43.17945139654745,
+            "sft_f1": 46.0,
+            "count": 67,
+            "avg_base_f1": 64.44694238290664,
+            "avg_sft_f1": 68.65671641791045
+        },
+        "answerable": {
+            "base_f1": 16.974808097281024,
+            "sft_f1": 29.49718614718615,
+            "count": 83,
+            "avg_base_f1": 20.45157602082051,
+            "avg_sft_f1": 35.53877849058572
+        }
+    },
+    "detailed_results": [
+        {
+            "type": "unanswerable",
+            "question": "What is not a defining aspect of what it means to be human?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What concept is characterized by abrasive leads and darker houses?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The concept characterized by abrasive leads and darker arpeggios is \"Dirty Dutch,\" which is a subgenre of electro house music. This concept is associated with prominent DJs such as Chuckie, Hardwell, Laidback Luke, Afrojack,",
+            "sft_prediction": "[answer]: Dirty Dutch\n[reference]: Dirty Dutch",
+            "base_f1": 0.04878048780487805,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What does not show shared Middle Eastern ancestry?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "When naming a commercial SDTV product, a frame rate can be specified without what?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What countries did the federalist model succeed in? ",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The federalist model succeeded in the United States, Germany, and Australia. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.09999999999999999,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What other language wasn't used outside of Armenia?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: Armenian\n[reference]: Armenian",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What are represented by symmetries?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The symmetries are represented by functions. Each of these functions sends a point in the square to the corresponding point under the symmetry.",
+            "sft_prediction": "[answer]: functions\n[reference]: functions",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Where does Miami fall among the least populous urban areas in the United States?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What was developed recently to standardize codes? ",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: responsa\n[reference]: responsa",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What book was not used by priests in 1637?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Who did the Roman soldiers speak to when they were in mourning?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The Roman soldiers were assigned to guard the tomb, so they spoke to the tomb. This is mentioned in the context as \"the Roman soldiers were assigned to guard the tomb.\" reference: [context]",
+            "sft_prediction": "[answer]: centurion\n[reference]: centurion",
+            "base_f1": 0.1111111111111111,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "How many start ups are associated with UCC?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 57\n[reference]: 57",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": " What type of storm is The Pooter on Neptune?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What tradition did Marvel embrace?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What lexicon can the prestige dialect be traced to?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The reference is: \"the third stratum of pronunciations (typically literary ones) comes from the Tang Dynasty (618–907 CE) and is based on the prestige dialect of Chang'an (modern day Xi'an), its",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.1111111111111111,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What schism began in the 10th century?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The religious borders are largely comparable to the East–West Schism which began in the 11th century.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What year were synthetic pigments first used?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 1962\n[reference]: 1962",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What type of oil is also known as suncryde?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The type of oil also known as suncryde is synthetic crude oil, which is referred to as syncrude. This is mentioned in the context as \"Synthetic crude oil, also known as syncrude.\" \n\nreference: [context",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0975609756097561,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What Canadian city got of protein in 1995?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What concept did Matt Rossano suggest earlier than others?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What offers some clues for how dialects were different?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The answer is: Comparative and historical linguistics offers some clues for how dialects were different. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.16,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Which band beside Bon Jovi were two rock bands that had very little commercial success in the 1970s and 1980s?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What wasn't the 'Treatise on the Police' called in French?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The 'Treatise on the Police' was not called in French. The reference is: \"Michel Foucault claims that the contemporary concept of police as a paid and funded functionary of the state was developed by German and French legal scholars",
+            "sft_prediction": "[answer]: Traité de la Police\n[reference]: Traité de la Police",
+            "base_f1": 0.047619047619047616,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "When was the first Sumerian renaissance?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "How much rainfall comes down during the dry season on average?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The average rainfall during the dry season is 1000 mm annually. This is based on the context provided. Reference: [context].",
+            "sft_prediction": "[answer]: 1000 mm\n[reference]: 1000 mm",
+            "base_f1": 0.3846153846153846,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What does informal learning not teach? ",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What were international systems called in 1914?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: international systems\n[reference]: international systems",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What do Chinese varieties have more of than Standard Mandarin?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: more consonants\n[reference]: more consonants",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What is one of the Christian religions that celebrates Easter?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": " What helped to advance the Greek way of life inside its boarders?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The answer is: The Hellenistic period helped to advance the Greek way of life inside its boarders. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.16,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What did the spirituality not reflect?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "When was Lothar I born?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What is an example of a rare group?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What is the square mile area of Texas?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "When did pragmatic philosophy die out?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What provision relies on the Safe Harbor agreement?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The provision that relies on the Safe Harbor agreement is Section §1539(a)(1)(A). Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.1904761904761905,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Which two languages have undergone more change than French regarding phonological structures?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The answer is: Spanish.  \nReference: [context]",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.2857142857142857,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Whose reign was marked by the acceleration of military expansion?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "In which doctrine did the US call for three separate branches of government?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The answer is: **Separation of powers**.  \nReference: [context]",
+            "sft_prediction": "[answer]: separation of powers\n[reference]: separation of powers",
+            "base_f1": 0.25,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What year is it planned for IB programs to be in taken out of Madrasah Al-Arabiah Al-Islamiah?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 2019\n[reference]: 2019",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What year were teams from Scotland, Wales, and Ireland barred from entering?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 1884 and 1885\n[reference]: 1884 and 1885",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Who did Compaq overtake in the price war of 1993?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Which region had the highest gain?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What was the name of the purity law that reulated beer in 1500?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Why is materialism is not linked to reduction?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": " Who didn't convince Valens to let him return to Alexandria?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The answer is: Athanasius.  \nReference: [context].",
+            "sft_prediction": "[answer]: Valens\n[reference]: Valens",
+            "base_f1": 0.2857142857142857,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What were other traits besides karyotype studied by Brown in 2002?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What percentage of Brandenburg students never went to a Gesamtschule in 2007?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Which Western country did Somalia partner with?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "Western country: United Kingdom, Sweden, Switzerland, Canada. Reference: In order to fill the vacuum, Somali Post signed an agreement in 2003 with the United Arab Emirates' Emirates Post to process mail to and from Somalia. Emirates Post",
+            "sft_prediction": "[answer]: United Arab Emirates\n[reference]: United Arab Emirates",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "When was the ISO 1189 system first adopted in Germany?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 1922\n[reference]: 1922",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What unique status does the Federal District have in Brazil?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The Federal District has a unique status in Brazil as an administrative division rather than a legal municipality like other cities in Brazil. This is indicated in the context. reference: [context]",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.1142857142857143,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Which term has been replaced by Sino-Korean Kidok?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The term that has been replaced by Sino-Korean Kidok is the Greek form Kurisudo 그리스도. This is referenced in the context as: \"the Greek form Kurisudo 그리스도 has now replaced the old Sino-Korean Kidok.\"",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.10526315789473684,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Which European trains can operate under high voltages?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The European trains that can operate under high voltages are the Swiss and German 15 kV trains. The reference to this information is: \"Practice has proven that both Swiss and German 15 kV trains can operate under these lower volt",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.043478260869565216,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "How did empiricists discover innate ideas?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What is the dominate type of oak in the Appalachians?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The dominate type of oak in the Appalachians is white and northern red oaks. This is mentioned in the context as \"the richest forests, which grade into mesic types, usually in coves and on gentle slopes, have dominantly white and",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.13333333333333333,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What causes humans to estimate time intervals?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The level of activity in the brain of neurotransmitters such as dopamine and norepinephrine may be the reason for this. Such chemicals will either excite or inhibit the firing of neurons in the brain, with a greater firing rate allowing the brain",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.04545454545454545,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What do hermaphrodite flowers use to discriminate between self and non-self pollination?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The answer is: self-incompatibility.  \nReference: [context]",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.2857142857142857,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What fraction of federal appellate cases were published in 2007?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What predecessor's a Digimon similar to?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The reference is: \"Digital Monsters\" started out as digital pets called \"Digital Monsters\", similar in style and concept to the Tamagotchi.",
+            "sft_prediction": "[answer]: Tamagotchi\n[reference]: Tamagotchi",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": " A Quantum Dot non-LED has been used in what?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Colonization increased the power of what group in the Congo River basin?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The answer is: **Bantu societies**.  \nReference: [context]: After centuries as a major hub for transatlantic trade, direct European colonization of the Congo river delta began in the late 19th century, subsequently eroding the",
+            "sft_prediction": "[answer]: Bantu societies\n[reference]: Bantu societies",
+            "base_f1": 0.10810810810810811,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What definition states that units of length can not be coodinated with physical objects?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The reference is: \"The first has to do with coordinating units of length with certain physical objects.\"",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What is Mexico official language?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Clopidogrel is a form of what inhibitor?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "Clopidogrel is a form of a factor Xa inhibitor. Reference: [context].",
+            "sft_prediction": "[answer]: factor Xa inhibitor\n[reference]: factor Xa inhibitor",
+            "base_f1": 0.1111111111111111,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What did Scottish Immigrants to Columba found in the 19th century?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Who was the Dutchess' rumored friend?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The reference is: \"Sir John Conroy\".",
+            "sft_prediction": "[answer]: Sir John Conroy\n[reference]: Sir John Conroy",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "In January 2015, China was set to invest how much in Galileo over the following years?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What fact was ignored by enacting one-drop rule laws?",
+            "gold_answers": [
+                "that many whites had multiracial ancestry."
+            ],
+            "base_prediction": "The fact that many families were multiracial was ignored by enacting one-drop rule laws. This is mentioned in the context as: \"Many families were multiracial.\" reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.1935483870967742,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What three titles were part of the darker, grimmer Marvel Knights comics?",
+            "gold_answers": [
+                "the Inhumans, Black Panther and Daredevil"
+            ],
+            "base_prediction": "The three titles part of the darker, grimmer Marvel Knights comics are Inhumans, Black Panther, and Daredevil. Reference: In 1998, the company launched the imprint Marvel Knights, taking place within Marvel continuity; helmed",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.29411764705882354,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What was Bell's discipline?",
+            "gold_answers": [
+                "Vocal Physiology and Elocution"
+            ],
+            "base_prediction": "The answer is: **Vocal Physiology and Elocution**.  \nReference: [context]: In the following year, Bell became professor of Vocal Physiology and Elocution at the Boston University School of Oratory.",
+            "sft_prediction": "[answer]: Vocal Physiology and Elocution\n[reference]: Vocal Physiology and Elocution",
+            "base_f1": 0.2758620689655173,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "Demotic speaking Greek refugees were placed where?",
+            "gold_answers": [
+                "Greek Isles and cities"
+            ],
+            "base_prediction": "Demotic speaking Greek refugees were placed in the Greek Isles and cities. This is referenced in the context as: \"settling the Demotic speakers and non Greeks in the Greek Isles and cities, where they were already adapted to.\"",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.21052631578947367,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "The Lord Mayor's Show occurs annually in what month?",
+            "gold_answers": [
+                "November"
+            ],
+            "base_prediction": "The Lord Mayor's Show occurs annually in November. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.19999999999999998,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Who was the Ming Chinese official?",
+            "gold_answers": [
+                "Zhang Juzheng"
+            ],
+            "base_prediction": "The Ming Chinese official mentioned in the context is Zhang Juzheng (1525–1582). Reference: [context].",
+            "sft_prediction": "[answer]: Zhang Juzheng\n[reference]: Zhang Juzheng",
+            "base_f1": 0.2857142857142857,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "Which powerful religious institution was a big part of scientific study in the 19th century?",
+            "gold_answers": [
+                "the Church of England"
+            ],
+            "base_prediction": "The reference is: \"the English scientific establishment was closely tied to the Church of England.\"  \nThe answer is: The reference is: \"the English scientific establishment was closely tied to the Church of England.\"",
+            "sft_prediction": "[answer]: Church of England\n[reference]: Church of England",
+            "base_f1": 0.20689655172413793,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What organization captured significant segments of Iraq and Syria?",
+            "gold_answers": [
+                "ISIL"
+            ],
+            "base_prediction": "The organization that captured significant segments of Iraq and Syria is ISIL. This is referenced in the context as: \"ISIL had perpetrated sectarian killings and war crimes in both Iraq and Syria.\"",
+            "sft_prediction": "[answer]: ISIL\n[reference]: ISIL",
+            "base_f1": 0.06451612903225806,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "Who founded the Southern Nazarene University",
+            "gold_answers": [
+                "Church of the Nazarene"
+            ],
+            "base_prediction": "The Southern Nazarene University was founded by the Church of the Nazarene. Reference: [context]",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.42857142857142855,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "In which country were the scenes with Detlef Bothe shot?",
+            "gold_answers": [
+                "Austria."
+            ],
+            "base_prediction": "The scenes with Detlef Bothe were shot in Austria.",
+            "sft_prediction": "[answer]: Austria\n[reference]: Austria",
+            "base_f1": 0.2222222222222222,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "Are the separate religious factions in Burma able to peacefully coexist ?",
+            "gold_answers": [
+                "unrest had re-emerged between Myanmar's Buddhist and Muslim communities, with violence"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Which actress decided to not participate on April 15?",
+            "gold_answers": [
+                "Soha Ali Khan"
+            ],
+            "base_prediction": "The actress who decided to not participate on April 15 is Soha Ali Khan. Reference: [context].",
+            "sft_prediction": "[answer]: Bollywood actress Soha Ali Khan\n[reference]: Bollywood actress Soha Ali Khan",
+            "base_f1": 0.33333333333333337,
+            "sft_f1": 0.7499999999999999
+        },
+        {
+            "type": "answerable",
+            "question": "Which continent is the highest in elevation?",
+            "gold_answers": [
+                "Antarctica"
+            ],
+            "base_prediction": "The continent with the highest average elevation is Antarctica. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.19999999999999998,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Who was the third caliph?",
+            "gold_answers": [
+                "Uthman ibn Affan"
+            ],
+            "base_prediction": "The third caliph was Uthman ibn Affan. reference: [context]",
+            "sft_prediction": "[answer]: Uthman ibn Affan\n[reference]: Uthman ibn Affan",
+            "base_f1": 0.5454545454545454,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "In what yer was the Battle of Manzikert fought?",
+            "gold_answers": [
+                "1071"
+            ],
+            "base_prediction": "The Battle of Manzikert was fought in the 1070s. Reference: In 1071, the Turkish army defeated the Byzantine army at the Battle of Manzikert and captured the Byzantine Emperor Romanus IV",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.07692307692307693,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Do adolescents or children understand puns, proverbs, metaphors, and analogies most effectively?",
+            "gold_answers": [
+                "adolescents"
+            ],
+            "base_prediction": "Answer: adolescents  \nReference: [context]",
+            "sft_prediction": "[answer]: adolescents\n[reference]: adolescents",
+            "base_f1": 0.4,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "How much a  Myanmar's boundaries are encompassed by beachfront lands?",
+            "gold_answers": [
+                "(1,200 miles) forms an uninterrupted coastline"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 1,930 km\n[reference]: 1,930 km",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Who was \"The Ballad of Chevy Chase\" composed by?",
+            "gold_answers": [
+                "Richard Sheale"
+            ],
+            "base_prediction": "The Ballad of Chevy Chase was composed by the Lancashire-born minstrel Richard Sheale. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.2666666666666667,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Who denounced many nobles?",
+            "gold_answers": [
+                "Hieronim Nekanda Trepka"
+            ],
+            "base_prediction": "The reference to the person who denounced many nobles is **Heronim Nekanda Trepka**.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.28571428571428575,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What is Cyprus' affiliation with the European Union?",
+            "gold_answers": [
+                "member state"
+            ],
+            "base_prediction": "The reference is: \"It is located south of Turkey, west of Syria and Lebanon, northwest of Israel and Palestine, north of Egypt and east of Greece.\"",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What prevented BBC2 from broadcasting on its scheduled launch date?",
+            "gold_answers": [
+                "massive power failure"
+            ],
+            "base_prediction": "The power failure at Battersea Power Station prevented BBC2 from broadcasting on its scheduled launch date.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.2222222222222222,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What are two prominent 360 exclusive franchises?",
+            "gold_answers": [
+                "the Halo franchise and Gears of War"
+            ],
+            "base_prediction": "The two prominent 360 exclusive franchises are Halo and Gears of War.",
+            "sft_prediction": "[answer]: Halo and Gears of War\n[reference]: Halo and Gears of War",
+            "base_f1": 0.5882352941176471,
+            "sft_f1": 0.9090909090909091
+        },
+        {
+            "type": "answerable",
+            "question": "What artist's acceptance speech did Kanye interrupt by walking on stage at the 57th Grammys?",
+            "gold_answers": [
+                "Beck"
+            ],
+            "base_prediction": "The artist whose acceptance speech was interrupted by West at the 57th Annual Grammy Awards is **Beck**.  \nReference: [context]",
+            "sft_prediction": "[answer]: Beyoncé\n[reference]: Beyoncé",
+            "base_f1": 0.1111111111111111,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "When did the Slavs invade Greece?",
+            "gold_answers": [
+                "7th century"
+            ],
+            "base_prediction": "The Slavs invaded Greece in the 7th century. reference: [context]",
+            "sft_prediction": "[answer]: 7th century\n[reference]: 7th century",
+            "base_f1": 0.4,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "In the US, how much of what white people earn, do blacks earn?",
+            "gold_answers": [
+                "75%"
+            ],
+            "base_prediction": "75% of what white people earn.",
+            "sft_prediction": "[answer]: 75%\n[reference]: 75%",
+            "base_f1": 0.2857142857142857,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "How much was the bond for that was to be used to purchase land for a Convention Center?",
+            "gold_answers": [
+                "$1.5 million"
+            ],
+            "base_prediction": "The bond issue for the purchase of land for a Convention Center was approved for $1.5 million. This was finalized September 30, 1924. Reference: [context].",
+            "sft_prediction": "[answer]: $1.5 million\n[reference]: $1.5 million",
+            "base_f1": 0.16666666666666669,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "Why did other students often tease Napoleon?",
+            "gold_answers": [
+                "his accent"
+            ],
+            "base_prediction": "The other students teased Napoleon for his marked Corsican accent and his lack of proper French spelling. This is referenced in the context as: \"He was teased by other students for his accent and applied himself to reading.\" [reference]",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.10256410256410257,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How many distinct rounds of genome duplication events are suspected in the evolution of seed plants?",
+            "gold_answers": [
+                "two"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What was the group that Friedman and Hayek supported later renamed to?",
+            "gold_answers": [
+                "Intercollegiate Studies Institute"
+            ],
+            "base_prediction": "The group that Friedman and Hayek supported later renamed is the Intercollegiate Studies Institute. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.35294117647058826,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How are the plants classified?",
+            "gold_answers": [
+                "number of their male sexual organs"
+            ],
+            "base_prediction": "The plants are classified using a hierarchical system based on Linnaeus's Systema Sexuale, which includes 24 groups according to the number of male sexual organs. This system is still the reference point for modern botanical nomenclature.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.2631578947368421,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How long is Greek's rail network estimated to run?",
+            "gold_answers": [
+                "2,548 km"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 2,548 km\n[reference]: 2,548 km",
+            "base_f1": 0.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "In Britain after 1837, what was the Gothic revival known as?",
+            "gold_answers": [
+                "Victorian Gothic"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: Victorian Gothic\n[reference]: Victorian Gothic",
+            "base_f1": 0.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What animals are usually hunted?",
+            "gold_answers": [
+                "mammals and birds"
+            ],
+            "base_prediction": "The animals that are usually hunted are referred to as game or prey and are usually mammals and birds. This is mentioned in the context as: \"The species that are hunted are referred to as game or prey and are usually mammals and birds.\"",
+            "sft_prediction": "[answer]: mammals and birds\n[reference]: mammals and birds",
+            "base_f1": 0.13636363636363635,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "Which rating was assigned to Switzerland by the Index of Economic Freedom of 2010?",
+            "gold_answers": [
+                "highest European rating"
+            ],
+            "base_prediction": "The Index of Economic Freedom 2010 assigned Switzerland the highest rating. reference: [context]",
+            "sft_prediction": "[answer]: 15th\n[reference]: 15th",
+            "base_f1": 0.28571428571428575,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What is the one autonomous area in Greece?",
+            "gold_answers": [
+                "Mount Athos"
+            ],
+            "base_prediction": "The one autonomous area in Greece is Mount Athos. Reference: [context].",
+            "sft_prediction": "[answer]: Mount Athos\n[reference]: Mount Athos",
+            "base_f1": 0.33333333333333337,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What is the law that is considered the core of religious laws Orthodox Jews know today?",
+            "gold_answers": [
+                "Sinaitic law"
+            ],
+            "base_prediction": "The law that is considered the core of religious laws Orthodox Jews know today is \"halacha leMoshe m'Sinai\". This reference is found in the context: \"all Orthodox Jews believe that there is an underlying core of Sinaitic law",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.1111111111111111,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What did many entrepreneurs interested in their local punk-influenced music scenes found?",
+            "gold_answers": [
+                "independent record labels"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What Native American language did Bell learn?",
+            "gold_answers": [
+                "Mohawk"
+            ],
+            "base_prediction": "The Native American language that Bell learned is Mohawk. Reference: [N 10]",
+            "sft_prediction": "[answer]: Mohawk\n[reference]: Mohawk",
+            "base_f1": 0.16666666666666669,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What are the names of the Greco-Turkish dances?",
+            "gold_answers": [
+                "sousta, syrtos, zeibekikos, tatsia, and karsilamas"
+            ],
+            "base_prediction": "The names of the Greco-Turkish dances are sousta, syrtos, zeibekikos, tatsia, and karsilamas. Reference: [context].",
+            "sft_prediction": "[answer]: sousta, syrtos, zeibekikos, tatsia, and karsilamas\n[reference]: sousta, syrtos, zeibekikos, tatsia, and karsilamas",
+            "base_f1": 0.631578947368421,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "How does Arsenal Ladies rank as compared with other English women's football teams?",
+            "gold_answers": [
+                "most successful"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How can the gene nomenclature be accessed? ",
+            "gold_answers": [
+                "through a database maintained by HGNC"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How many shrines exist in the Potala Palace?",
+            "gold_answers": [
+                "10,000"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Which city has the largest Greek-speaking population outside of Europe?",
+            "gold_answers": [
+                "Melbourne"
+            ],
+            "base_prediction": "The city with the largest Greek-speaking population outside of Europe is Thessaloniki. Reference: [context].",
+            "sft_prediction": "[answer]: Melbourne\n[reference]: Melbourne",
+            "base_f1": 0.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "On what type of clash is the Mahabharata thought to have been based?",
+            "gold_answers": [
+                "small-scale conflict"
+            ],
+            "base_prediction": "The Mahabharata is thought to have been based on a small-scale conflict, possibly about 1000 BCE, which was later transformed into a gigantic epic war by bards and poets. This is referenced in the context as: \"",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.11764705882352941,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What do illegal marketing cases fall under?",
+            "gold_answers": [
+                "False Claims Act"
+            ],
+            "base_prediction": "The illegal marketing cases fall under the False Claims Act. Reference: [context]",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.4615384615384615,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What is the name of youtube's revenue-sharing program?",
+            "gold_answers": [
+                "Partner Program"
+            ],
+            "base_prediction": "The name of YouTube's revenue-sharing program is the Partner Program.",
+            "sft_prediction": "[answer]: Partner Program\n[reference]: Partner Program",
+            "base_f1": 0.4,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What type of foods are generally thought of as a part of Hyderabadi cuisine?",
+            "gold_answers": [
+                "rice, wheat and meat dishes"
+            ],
+            "base_prediction": "The type of foods generally thought of as a part of Hyderabadi cuisine are rice, wheat, and meat dishes, along with a variety of spices. This is supported by the context provided. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.2857142857142857,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "The Min River is a major tributary of what river? ",
+            "gold_answers": [
+                "Yangtze"
+            ],
+            "base_prediction": "The Min River is a major tributary of the Yangtze.  \nreference: [context]",
+            "sft_prediction": "[answer]: Yangtze\n[reference]: Yangtze",
+            "base_f1": 0.19999999999999998,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What does DRM and anti-circumvention laws do?",
+            "gold_answers": [
+                "limit the amount of control consumers have"
+            ],
+            "base_prediction": "DRM technology and anti-circumvention laws limit the amount of control consumers have over the use of products and content they have purchased. This is part of the strategies used by corporations and legislatures to deter copyright infringement. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.2857142857142857,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What calendar was used in the reform to create the Gregorian calendar?",
+            "gold_answers": [
+                "Julian calendar"
+            ],
+            "base_prediction": "The calendar used in the reform to create the Gregorian calendar is the Julian calendar. The reference is: \"The Gregorian calendar was a reform of the Julian calendar instituted in 1582 by Pope Gregory XIII...\"",
+            "sft_prediction": "[answer]: Gregorian calendar\n[reference]: Gregorian calendar",
+            "base_f1": 0.13793103448275862,
+            "sft_f1": 0.5
+        },
+        {
+            "type": "answerable",
+            "question": "What thought process was used in the beginning belief of the existence of vacuums?",
+            "gold_answers": [
+                "Stoic physics"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What does temperature impact on tool kits?",
+            "gold_answers": [
+                "increased variability of tools"
+            ],
+            "base_prediction": "The temperature is the only statistically significant factor to impact hunter-gatherer tool kits. Reference: Collard et al. (2005).",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What class was polands nobility?",
+            "gold_answers": [
+                "closed class"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What other reviewer agreed with Home Theater Magazine's assessment of the PS3's Blu-ray player?",
+            "gold_answers": [
+                "Ultimate AV"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "When did the Ottomans lose the territory of Albania, Macedonia and Thrace?",
+            "gold_answers": [
+                "the two Balkan Wars of 1912–13"
+            ],
+            "base_prediction": "The Ottomans lost the territory of Albania, Macedonia, and Thrace up until 1912. This is referenced in the context as: \"Up until 1912 the Ottomans retained a band of territory including Albania",
+            "sft_prediction": "[answer]: 1912\n[reference]: 1912",
+            "base_f1": 0.0625,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Where does Miami rank in terms of US Spanish-speaking populations?",
+            "gold_answers": [
+                "second"
+            ],
+            "base_prediction": "The answer is: Miami ranks 33rd among global cities.  \nReference: [context]: In 2008, Forbes magazine ranked Miami \"America's Cleanest City\", for its year-round good air quality, vast green spaces,",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Where does the AG2R originate from?",
+            "gold_answers": [
+                "Concarneau"
+            ],
+            "base_prediction": "The Transat AG2R Race originates from Concarneau in Brittany, France. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.16666666666666669,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What is absent in a coreless DC motor?",
+            "gold_answers": [
+                "iron core"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "In what way has the phrase been spread wide?",
+            "gold_answers": [
+                "the phrase is now printed on newly issued Washington, D.C. license plates"
+            ],
+            "base_prediction": "The phrase has been spread wide through the use of Washington, D.C. license plates, which are printed with the shortened version of the Revolutionary War protest motto \"No taxation without representation,\" omitting the initial \"No,\" denoting their lack of Congressional",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.26086956521739124,
+            "sft_f1": 0.09999999999999999
+        },
+        {
+            "type": "answerable",
+            "question": "What was a new emphasis made on at the international convention?",
+            "gold_answers": [
+                "house-to-house preaching"
+            ],
+            "base_prediction": "The new emphasis made at the international convention was house-to-house preaching. Reference: [context].",
+            "sft_prediction": "[answer]: house-to-house preaching\n[reference]: house-to-house preaching",
+            "base_f1": 0.3076923076923077,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "How many soldiers died on September 17?",
+            "gold_answers": [
+                "two"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How much did the SNS-101 cost in the US?",
+            "gold_answers": [
+                "US$99"
+            ],
+            "base_prediction": "The SNS-101 model cost US$99.",
+            "sft_prediction": "[answer]: $99\n[reference]: $99",
+            "base_f1": 0.4,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Who said the police acted on their own in taking the flags?",
+            "gold_answers": [
+                "Michèle Alliot-Marie"
+            ],
+            "base_prediction": "The reference is: \"Minister of the Interior Michèle Alliot-Marie later stated that the police had not been ordered to do so, and that they had acted on their own initiative.\"",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.13793103448275862,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How tall is Mount Olympus?",
+            "gold_answers": [
+                "9,573 ft"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 2,918 metres (9,573 ft)\n[reference]: 2,918 metres (9,573 ft)",
+            "base_f1": 0.0,
+            "sft_f1": 0.6666666666666666
+        },
+        {
+            "type": "answerable",
+            "question": "What time period corresponds with the Mississippian cultural phase in early Tennessee history?",
+            "gold_answers": [
+                "1000–1600 AD"
+            ],
+            "base_prediction": "The Mississippian cultural phase in early Tennessee history corresponds with the time period of 1000–1600 AD. This is referenced in the context as: \"the Mississippian (1000–1",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.16666666666666669,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "On what date did Eisenhower receive his General of the Army appointment?",
+            "gold_answers": [
+                "December 20, 1944"
+            ],
+            "base_prediction": "On December 20, 1944, Eisenhower received his General of the Army appointment.",
+            "sft_prediction": "[answer]: December 20, 1944\n[reference]: December 20, 1944",
+            "base_f1": 0.42857142857142855,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What was the federalist party of the United States opposed to?",
+            "gold_answers": [
+                "Democratic-Republicans"
+            ],
+            "base_prediction": "The Federalist Party of the United States was opposed by the Democratic-Republicans, including powerful figures such as Thomas Jefferson.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.11764705882352941,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What was the storage capacity of the first iPod?",
+            "gold_answers": [
+                "5 GB"
+            ],
+            "base_prediction": "The storage capacity of the first iPod was 5 GB.",
+            "sft_prediction": "[answer]: 5 GB\n[reference]: 5 GB",
+            "base_f1": 0.4,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "Who created orchestral arrangements for the game?",
+            "gold_answers": [
+                "Michiru Ōshima"
+            ],
+            "base_prediction": "The orchestral arrangements for the game were created by Michiru Ōshima. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.3076923076923077,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Who was Nassir's choice to represent the Free Officers?",
+            "gold_answers": [
+                "Muhammad Naguib"
+            ],
+            "base_prediction": "Nassir's choice to represent the Free Officers was Muhammad Naguib. Reference: [context].",
+            "sft_prediction": "[answer]: Muhammad Naguib\n[reference]: Muhammad Naguib",
+            "base_f1": 0.3076923076923077,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "Where was the TV Tower located?",
+            "gold_answers": [
+                "Lithuania"
+            ],
+            "base_prediction": "The TV Tower was located in Vilnius, Lithuania. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.19999999999999998,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Why is Japan black used for outdoor paint?",
+            "gold_answers": [
+                "weather resistance"
+            ],
+            "base_prediction": "The answer is: Asphalt/bitumen is used to make Japan black, a lacquer known especially for its use on iron and steel, and it is also used in paint and marker inks by some graffiti supply companies to increase the weather resistance and perman",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.09523809523809523,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What was the name of the codec that OCF, PFXM and other contributes merged into?",
+            "gold_answers": [
+                "ASPEC"
+            ],
+            "base_prediction": "The name of the codec that OCF, PFXM, and other contributes merged into is ASPEC. Reference: [context]",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.125,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What division of dialects does Hokkien belong to?",
+            "gold_answers": [
+                "Quanzhang Division (Chinese: 泉漳片; pinyin: Quánzhāng piàn) of Min Nan"
+            ],
+            "base_prediction": "The term Hokkien belongs to the Quanzhang Division (Chinese: 泉漳片; pinyin: Quánzhāng piàn) of Min Nan. Reference: [context]",
+            "sft_prediction": "[answer]: Quanzhang Division\n[reference]: Quanzhang Division",
+            "base_f1": 0.7692307692307693,
+            "sft_f1": 0.33333333333333337
+        },
+        {
+            "type": "answerable",
+            "question": "What currently utilized item was World Records CLV similar to?",
+            "gold_answers": [
+                "Philips Laser Disc"
+            ],
+            "base_prediction": "The reference is: \"the CLV version of its predecessor, the Philips Laser Disc.\"  \nThe answer is: World Records CLV was similar to the modern compact disc.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.25,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How is the elevator enabled for service after the incident?",
+            "gold_answers": [
+                "The only way to return the elevator to normal service is to switch it to bypass after the alarms have reset"
+            ],
+            "base_prediction": "The elevator is enabled for service after the incident by switching it to bypass mode. This is done after the alarms have been reset. The reference to this is: \"The only way to return the elevator to normal service is to switch it to bypass after",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.6206896551724138,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What is Miami's Köppen climate classification?",
+            "gold_answers": [
+                "Am"
+            ],
+            "base_prediction": "The Köppen climate classification for Miami is Am.",
+            "sft_prediction": "[answer]: Am\n[reference]: Am",
+            "base_f1": 0.25,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What in human teeth enables proprioception?",
+            "gold_answers": [
+                "a blood and nerve supply"
+            ],
+            "base_prediction": "The reference to the part used from the context is: \"This is the ability of sensation when chewing, for example if we were to bite into something too hard for our teeth, such as a chipped plate mixed in food, our teeth send a",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Which company owns many of the patents that cover the other formats?",
+            "gold_answers": [
+                "Fraunhofer Gesellschaft"
+            ],
+            "base_prediction": "The company that owns many of the patents covering the other formats (mp3PRO, AAC, and MP2) is the Fraunhofer Gesellschaft.  \nreference: [context]",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.19999999999999998,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Who was the first to refer to culture as sociology?",
+            "gold_answers": [
+                "Alfred Weber"
+            ],
+            "base_prediction": "The first to refer to culture as sociology was Alfred Weber. Reference: [context]",
+            "sft_prediction": "[answer]: Alfred Weber\n[reference]: Alfred Weber",
+            "base_f1": 0.2857142857142857,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What are the three common impurities in aluminum alloys?",
+            "gold_answers": [
+                "Lithium, sodium and calcium"
+            ],
+            "base_prediction": "The three common impurities in aluminum alloys are lithium, sodium, and calcium. Reference: [context].",
+            "sft_prediction": "[answer]: oxygen, lithium, sodium\n[reference]: oxygen, lithium, sodium",
+            "base_f1": 0.47058823529411764,
+            "sft_f1": 0.5714285714285715
+        },
+        {
+            "type": "answerable",
+            "question": "How many ships did the Yuan send to invade Japan?",
+            "gold_answers": [
+                "900"
+            ],
+            "base_prediction": "The number of ships sent by the Yuan army to invade Japan was 900. This is referenced in the context as: \"the invading army was harassed by major thunderstorms throughout the invasion, which aided the defenders by inflicting heavy casualties.\"",
+            "sft_prediction": "[answer]: 900 ships\n[reference]: 900 ships",
+            "base_f1": 0.05714285714285715,
+            "sft_f1": 0.6666666666666666
+        },
+        {
+            "type": "answerable",
+            "question": "What makes a printer home switch work?",
+            "gold_answers": [
+                "position sensor"
+            ],
+            "base_prediction": "The home switch works to provide long-term stability of control in a stepper system, allowing the printer's microprocessor to maintain a stable position over time. This is part of the system's design to ensure consistent control even after the motor has stopped stepping.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.05128205128205129,
+            "sft_f1": 0.0
+        }
+    ]
+}
+
+
+======================================================================
+📊 평가 결과 요약 (F1 Score %)
+======================================================================
+Category             | Base Model F1   | SFT Model F1   
+----------------------------------------------------------------------
+Unanswerable         |          64.45% |          68.66%
+Answerable           |          20.45% |          35.54%
+======================================================================

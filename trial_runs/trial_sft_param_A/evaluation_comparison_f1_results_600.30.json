@@ -1,0 +1,372 @@
+{
+    "summary_metrics": {
+        "unanswerable": {
+            "base_f1": 5.744892787524368,
+            "sft_f1": 8.0,
+            "count": 13,
+            "avg_base_f1": 44.19148298095668,
+            "avg_sft_f1": 61.53846153846154
+        },
+        "answerable": {
+            "base_f1": 2.34772207024501,
+            "sft_f1": 5.409090909090909,
+            "count": 17,
+            "avg_base_f1": 13.810129824970646,
+            "avg_sft_f1": 31.818181818181817
+        }
+    },
+    "detailed_results": [
+        {
+            "type": "unanswerable",
+            "question": "What led to the rebellion in 1811?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What method didn't Avicenna criticize as not leading to absolute certainty?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The method that Avicenna criticized as not leading to absolute certainty is the \"method of induction (istiqra).\" \n\nreference: In the Al-Burhan (On Demonstration) section of The Book of Healing, Avicenna discussed the",
+            "sft_prediction": "[answer]: induction\n[reference]: induction",
+            "base_f1": 0.05555555555555555,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": " The EU outlawed the export of products that could never be used in what activity?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The EU outlawed the export of products that could never be used in an execution. This has prevented executioners from using EU-manufactured anesthetics like propofol which are needed for general medical purposes. Reference: [context]",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.09999999999999999,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What was Euro1080 hoping to kick-start by broadcasting SDTV channels?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What chemical agent is used to control introduced species?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: pesticides\n[reference]: pesticides",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Who was one of the pilots that flew four Douglas-built planes attempting the first aerial circumnavigation of the world?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "answer: Donald Wills Douglas, Sr.  \nreference: [context]",
+            "sft_prediction": "[answer]: Donald Wills Douglas, Sr.\n[reference]: Donald Wills Douglas, Sr.",
+            "base_f1": 0.25,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "When was the ISO 1189 system first adopted in Germany?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 1922\n[reference]: 1922",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": " What did it mean to not be classified as a Greek by the millet command ?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What prevents redundancy in the ways you can make one character?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The mechanism of canonical equivalence prevents redundancy in the ways you can make one character.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What became the official language of an empire in 681?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The official language of the First Bulgarian Empire in 681 was Old Bulgarian. This is referenced in the context as: \"the Slavic language Old Bulgarian became the main and official of the empire in 864.\"",
+            "sft_prediction": "[answer]: Old Bulgarian\n[reference]: Old Bulgarian",
+            "base_f1": 0.10526315789473684,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What helped to bolster house music in Sheffield?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The earliest and influential UK house and techno record labels such as Warp Records and Network Records helped introduce American and later Italian dance music to Britain as well as promoting select UK dance music acts. This helped to bolster house music in Sheffield. reference: [context",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.07407407407407407,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Distaste has an unaspirated middle why?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The reference is: \"distaste has an aspirated middle [tʰ] because it is analyzed as dis- + taste and the word taste has an aspirated initial t.\"",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": " What helped to advance the Greek way of life inside its boarders?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The answer is: The Hellenistic period helped to advance the Greek way of life inside its boarders. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.16,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What are the names of the Greco-Turkish dances?",
+            "gold_answers": [
+                "sousta, syrtos, zeibekikos, tatsia, and karsilamas"
+            ],
+            "base_prediction": "The names of the Greco-Turkish dances are sousta, syrtos, zeibekikos, tatsia, and karsilamas. Reference: [context].",
+            "sft_prediction": "[answer]: sousta, syrtos, zeibekikos, tatsia, karsilamas\n[reference]: sousta, syrtos, zeibekikos, tatsia, karsilamas",
+            "base_f1": 0.631578947368421,
+            "sft_f1": 0.9090909090909091
+        },
+        {
+            "type": "answerable",
+            "question": "What three titles were part of the darker, grimmer Marvel Knights comics?",
+            "gold_answers": [
+                "the Inhumans, Black Panther and Daredevil"
+            ],
+            "base_prediction": "The three titles part of the darker, grimmer Marvel Knights comics are Inhumans, Black Panther, and Daredevil. Reference: In 1998, the company launched the imprint Marvel Knights, taking place within Marvel continuity; helmed",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.29411764705882354,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Where is Tohono Chul Park?",
+            "gold_answers": [
+                "near the intersection of North Oracle Road and West Ina Road"
+            ],
+            "base_prediction": "Tohono Chul Park is located near the intersection of North Oracle Road and West Ina Road in Casas Adobes. This is referenced in the context as: \"Tohono Chul Park (a nature preserve) near the intersection",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.4878048780487805,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How many years ago did Protestantism arrive in the province?",
+            "gold_answers": [
+                "150"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 150 years ago\n[reference]: 150 years ago",
+            "base_f1": 0.0,
+            "sft_f1": 0.5
+        },
+        {
+            "type": "answerable",
+            "question": "How many of the team were from the police?",
+            "gold_answers": [
+                "22"
+            ],
+            "base_prediction": "The number of people from the police in the team is 22. Reference: [context].",
+            "sft_prediction": "[answer]: 22\n[reference]: 22",
+            "base_f1": 0.16666666666666669,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What is Cyprus' affiliation with the European Union?",
+            "gold_answers": [
+                "member state"
+            ],
+            "base_prediction": "The reference is: \"It is located south of Turkey, west of Syria and Lebanon, northwest of Israel and Palestine, north of Egypt and east of Greece.\"",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "When was the gold rush over in Melbourne?",
+            "gold_answers": [
+                "1860"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How many members of the Swazi House of Assembly are chosen by the king?",
+            "gold_answers": [
+                "10"
+            ],
+            "base_prediction": "The number of members of the Swazi House of Assembly chosen by the king is 55. This is based on the context provided. Reference: [context].",
+            "sft_prediction": "[answer]: 10\n[reference]: 10",
+            "base_f1": 0.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What is another name for a Qur'anic school?",
+            "gold_answers": [
+                "dugsi"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What was Kilby's IC made of?",
+            "gold_answers": [
+                "germanium"
+            ],
+            "base_prediction": "The first practical ICs were invented by Jack Kilby at Texas Instruments and Robert Noyce at Fairchild Semiconductor. Kilby's IC was made of germanium.",
+            "sft_prediction": "[answer]: silicon\n[reference]: silicon",
+            "base_f1": 0.08333333333333333,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "What element of the formalist definition makes it difficult to apply?",
+            "gold_answers": [
+                "\"ordinary language\""
+            ],
+            "base_prediction": "The element of the formalist definition that makes it difficult to apply is the instability of the \"ordinary language\" category, which varies according to social categories and across history. This difficulty arises because identifying what constitutes \"ordinary language\" is challenging. \n\nreference",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.10256410256410257,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "When was Microsoft supposed to officially launch Windows 8?",
+            "gold_answers": [
+                "October 25, 2012"
+            ],
+            "base_prediction": "The answer is: August 15, 2012. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.2,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How old are some of Charleston's private school?",
+            "gold_answers": [
+                "150 years"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "Along with the Miami River, near what body of water are Miami seafood restaurants notably located?",
+            "gold_answers": [
+                "Biscayne Bay"
+            ],
+            "base_prediction": "The seafood restaurants in Miami are notably located along the Miami River and near Biscayne Bay. This is mentioned in the context as: \"Miami is also the home of restaurant chains such as Burger King, Tony Roma's and Benihana.\"",
+            "sft_prediction": "[answer]: Biscayne Bay\n[reference]: Biscayne Bay",
+            "base_f1": 0.1081081081081081,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "How does traffic travel on the last block of the 20th, 21st, and 22nd Streets?",
+            "gold_answers": [
+                "in the opposite direction"
+            ],
+            "base_prediction": "The traffic travels in the opposite direction on the last block of the 20th, 21st, and 22nd Streets compared to the rest of the streets. This is referenced in the context as: \"Travel on the last",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.19354838709677416,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "In what year did the companies owned by Computing-Tabulating-Recording Company finally integrate?",
+            "gold_answers": [
+                "1933"
+            ],
+            "base_prediction": "The companies owned by Computing-Tabulating-Recording Company finally integrated in 1933. This is referenced in the context as: \"the businesses were integrated in 1933 and the holding company eliminated.\"",
+            "sft_prediction": "[answer]: 1933\n[reference]: 1933",
+            "base_f1": 0.07999999999999999,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What thought process was used in the beginning belief of the existence of vacuums?",
+            "gold_answers": [
+                "Stoic physics"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        }
+    ]
+}
+
+600개 학습 30개 테스트
+======================================================================
+📊 평가 결과 요약 (F1 Score %)
+======================================================================
+Category             | Base Model F1   | SFT Model F1   
+----------------------------------------------------------------------
+Unanswerable         |          44.19% |          61.54%
+Answerable           |          13.81% |          31.82%
+======================================================================
+
+{'loss': 2.8227, 'grad_norm': 1.6086841821670532, 'learning_rate': 9.814586436738998e-05, 'entropy': 2.0434093087911607, 'num_tokens': 22902.0, 'mean_token_accuracy': 0.49491518139839175, 'epoch': 0.14}
+{'loss': 2.0083, 'grad_norm': 1.0232936143875122, 'learning_rate': 8.730918429238428e-05, 'entropy': 2.123654302954674, 'num_tokens': 46433.0, 'mean_token_accuracy': 0.6116856023669243, 'epoch': 0.28}
+{'loss': 1.7892, 'grad_norm': 0.9765455722808838, 'learning_rate': 6.887095978763072e-05, 'entropy': 1.7708482593297958, 'num_tokens': 69285.0, 'mean_token_accuracy': 0.6480114966630935, 'epoch': 0.42}
+{'loss': 1.7198, 'grad_norm': 1.063029408454895, 'learning_rate': 4.658787933176646e-05, 'entropy': 1.6973305612802505, 'num_tokens': 91960.0, 'mean_token_accuracy': 0.6585130602121353, 'epoch': 0.56}
+{'loss': 1.7016, 'grad_norm': 0.8955988883972168, 'learning_rate': 2.500000000000001e-05, 'entropy': 1.7247704803943633, 'num_tokens': 115211.0, 'mean_token_accuracy': 0.660710646212101, 'epoch': 0.7}
+{'loss': 1.7238, 'grad_norm': 1784.3016357421875, 'learning_rate': 8.505735400048748e-06, 'entropy': 1.6935120522975922, 'num_tokens': 137378.0, 'mean_token_accuracy': 0.6585538268089295, 'epoch': 0.84}
+{'loss': 1.8285, 'grad_norm': 0.8032225370407104, 'learning_rate': 4.6570269818346224e-07, 'entropy': 1.8117703914642334, 'num_tokens': 161052.0, 'mean_token_accuracy': 0.6452165246009827, 'epoch': 0.98}
+{'train_runtime': 1027.0966, 'train_samples_per_second': 0.555, 'train_steps_per_second': 0.07, 'train_loss': 1.9391537209351857, 'entropy': 1.716770076751709, 'num_tokens': 163979.0, 'mean_token_accuracy': 0.6493701696395874, 'epoch': 1.0}
+
+
+* 일단 충분한 테스트 셋의 확보가 필요함.

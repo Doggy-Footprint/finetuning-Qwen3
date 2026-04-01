@@ -1,0 +1,255 @@
+{
+    "summary_metrics": {
+        "unanswerable": {
+            "base_f1": 7.841130351130351,
+            "sft_f1": 8.0,
+            "count": 12,
+            "avg_base_f1": 65.34275292608626,
+            "avg_sft_f1": 66.66666666666666
+        },
+        "answerable": {
+            "base_f1": 1.5369565217391306,
+            "sft_f1": 4.666666666666666,
+            "count": 8,
+            "avg_base_f1": 19.211956521739133,
+            "avg_sft_f1": 58.33333333333333
+        }
+    },
+    "detailed_results": [
+        {
+            "type": "unanswerable",
+            "question": "Assemblers often mount components on portals rather than single PCBs why?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The assemblers often mount components on panels rather than single PCBs because this is efficient. Reference: [context].",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.24000000000000005,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "In January 2015, China was set to invest how much in Galileo over the following years?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What do critics note were intermingled at the time the Constitution was not ratified?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Who developed arguments for God  being philosophical?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What was the life expectancy in 2006 in Eretria?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 59.5\n[reference]: 59.5",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Who chose to rebuild the great Church of Saint-Denis in about 1237?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "In which doctrine did the US call for three separate branches of government?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The answer is: **Separation of powers**.  \nReference: [context]",
+            "sft_prediction": "[answer]: separation of powers\n[reference]: separation of powers",
+            "base_f1": 0.25,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What is the cost of an executive order?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 1.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "Which graduate of The Feinburg School of Medicine was the last physician in space?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The graduate of The Feinberg School of Medicine who was the last physician in space is Joseph P. Kerwin. Reference: [context]: Joseph P. Kerwin, first physician in space, flew on three skylab missions and later served",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.09523809523809523,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What helped to bolster house music in Sheffield?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The earliest and influential UK house and techno record labels such as Warp Records and Network Records helped introduce American and later Italian dance music to Britain as well as promoting select UK dance music acts. This helped to bolster house music in Sheffield. reference: [context",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.07407407407407407,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "When was the conecept, unsustainable architecture used?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 20th century\n[reference]: 20th century",
+            "base_f1": 1.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "unanswerable",
+            "question": "What has been used in argument for patient-assisted suicide?",
+            "gold_answers": [
+                "I cannot answer this question based on the provided context."
+            ],
+            "base_prediction": "The answer is: Pain has been used in arguments for patient-assisted suicide. Reference: [context].",
+            "sft_prediction": "[answer]: pain\n[reference]: pain",
+            "base_f1": 0.18181818181818185,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How much a  Myanmar's boundaries are encompassed by beachfront lands?",
+            "gold_answers": [
+                "(1,200 miles) forms an uninterrupted coastline"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 1,930 km\n[reference]: 1,930 km",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "How can the gene nomenclature be accessed? ",
+            "gold_answers": [
+                "through a database maintained by HGNC"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.0,
+            "sft_f1": 0.0
+        },
+        {
+            "type": "answerable",
+            "question": "When would you have first found the moving coil microphone?",
+            "gold_answers": [
+                "around 1930"
+            ],
+            "base_prediction": "The moving coil microphone was introduced around 1930. This is referenced in the context as: \"The dynamic or moving coil microphone was introduced around 1930.\"",
+            "sft_prediction": "[answer]: 1930\n[reference]: 1930",
+            "base_f1": 0.16666666666666669,
+            "sft_f1": 0.6666666666666666
+        },
+        {
+            "type": "answerable",
+            "question": "Who led the way for the Congress of Vienna?",
+            "gold_answers": [
+                "Austria"
+            ],
+            "base_prediction": "The reference is: \"Austria, trying to remain the dominant power in Central Europe, led the way in the terms of the Congress of Vienna.\"  \nThe answer is: Austria.",
+            "sft_prediction": "[answer]: Austria\n[reference]: Austria",
+            "base_f1": 0.08695652173913045,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "On Twitter what famous person condemned Hopkins' remarks?",
+            "gold_answers": [
+                "Russell Brand"
+            ],
+            "base_prediction": "reference: Russell Brand",
+            "sft_prediction": "[answer]: Russell Brand\n[reference]: Russell Brand",
+            "base_f1": 0.8,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What was Kilby's IC made of?",
+            "gold_answers": [
+                "germanium"
+            ],
+            "base_prediction": "The first practical ICs were invented by Jack Kilby at Texas Instruments and Robert Noyce at Fairchild Semiconductor. Kilby's IC was made of germanium.",
+            "sft_prediction": "[answer]: germanium\n[reference]: germanium",
+            "base_f1": 0.08333333333333333,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "How many underwriters was Richard M. Bowen III responsible for at Citigroup?",
+            "gold_answers": [
+                "220"
+            ],
+            "base_prediction": "I cannot answer this question based on the provided context.",
+            "sft_prediction": "[answer]: 220\n[reference]: 220",
+            "base_f1": 0.0,
+            "sft_f1": 1.0
+        },
+        {
+            "type": "answerable",
+            "question": "What did Raghuram Rajan speak of?",
+            "gold_answers": [
+                "Great Moderation"
+            ],
+            "base_prediction": "Raghuram Rajan spoke of the Great Moderation. Reference: [context]",
+            "sft_prediction": "[answer]: I cannot answer this question based on the provided context.\n[reference]:",
+            "base_f1": 0.4,
+            "sft_f1": 0.0
+        }
+    ]
+}
+왜 님이 좋아지세요? 400개 학습, 20개 테스트
+======================================================================
+📊 평가 결과 요약 (F1 Score %)
+======================================================================
+Category             | Base Model F1   | SFT Model F1   
+----------------------------------------------------------------------
+Unanswerable         |          65.34% |          66.67%
+Answerable           |          19.21% |          58.33%
+======================================================================
+
+{'loss': 2.7817, 'grad_norm': 1.698445200920105, 'learning_rate': 9.439426092011875e-05, 'entropy': 2.0694734364748, 'num_tokens': 23099.0, 'mean_token_accuracy': 0.5020920246839523, 'epoch': 0.21}
+{'loss': 1.9619, 'grad_norm': 1.0869563817977905, 'learning_rate': 6.992005449231208e-05, 'entropy': 2.040201190114021, 'num_tokens': 46072.0, 'mean_token_accuracy': 0.6171266511082649, 'epoch': 0.42}
+{'loss': 1.819, 'grad_norm': 1.01120924949646, 'learning_rate': 3.651016144214878e-05, 'entropy': 1.794213020801544, 'num_tokens': 68533.0, 'mean_token_accuracy': 0.6486342310905456, 'epoch': 0.63}
+{'loss': 1.7845, 'grad_norm': 0.9785761833190918, 'learning_rate': 9.151505349477902e-06, 'entropy': 1.7834405183792115, 'num_tokens': 92064.0, 'mean_token_accuracy': 0.6453755170106887, 'epoch': 0.84}
+{'train_runtime': 489.8129, 'train_samples_per_second': 0.776, 'train_steps_per_second': 0.098, 'train_loss': 2.036657134691874, 'entropy': 1.758042327562968, 'num_tokens': 109309.0, 'mean_token_accuracy': 0.6556901594003042, 'epoch': 1.0}
