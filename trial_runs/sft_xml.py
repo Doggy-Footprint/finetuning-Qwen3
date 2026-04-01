@@ -36,7 +36,7 @@ MAX_ITERS = (TRAIN_SIZE // BATCH_SIZE) * NUM_EPOCHS
 
 DATA_DIR = f"{ROOT_DIR}/data_mlx"
 ADAPTER_PATH = f"{ROOT_DIR}/saved_model_squad_mlx_r{LORA_R}"
-RESULT_SAVE_PATH = f"{ROOT_DIR}/evaluation_comparison_f1_mlx.json"
+RESULT_SAVE_PATH = f"{ROOT_DIR}/evaluation_comparison_results.json"
 
 TARGET_SENTENCE = "I cannot answer this question based on the provided context."
 SYSTEM_PROMPT = """Use the provided [context] to answer the [question] as [answer], and write the part used from the [context] as [reference]. If you cannot answer the [question] based on the provided [context], answer "{target}" for [answer], and leave [reference] empty."""
