@@ -1,0 +1,5 @@
+lora_parameters:
+  rank: 32
+  alpha: 64
+  dropout: 0.05
+  scale: 10.0
