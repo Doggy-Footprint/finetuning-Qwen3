@@ -32,7 +32,7 @@ GRAD_ACCUMULATION_STEPS = 4
 NUM_EPOCHS = 1
 OPTIMIZER = "adamw"
 # MLX는 Epoch 대신 Iteration 단위를 기본으로 사용함
-MAX_ITERS = (TRAIN_SIZE // BATCH_SIZE) * NUM_EPOCHS 
+MAX_ITERS = (TRAIN_SIZE // (BATCH_SIZE * GRAD_ACCUMULATION_STEPS)) * NUM_EPOCHS 
 
 DATA_DIR = f"{ROOT_DIR}/data_mlx"
 ADAPTER_PATH = f"{ROOT_DIR}/saved_model_squad_mlx_r{LORA_R}"
@@ -152,7 +152,7 @@ def prepare_data_and_train():
         "--learning-rate", str(LEARNING_RATE),
         "--save-every", str(MAX_ITERS // 2),
         "--max-seq-length", "750",
-        "--steps-per-report", "10",
+        "--steps-per-report", str(MAX_ITERS // 10),
         "--grad-checkpoint",
         "-c", f"{ROOT_DIR}/lora_config.yaml"
     ]
