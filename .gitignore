@@ -8,3 +8,7 @@ results_*/
 **/train_data_*
 *results.json
 **/data_mlx
+csvs
+sft/adapters
+sft/data
+sft_config.yaml

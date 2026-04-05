@@ -26,13 +26,15 @@ LEARNING_RATE = 3e-5
 
 # 학습 설정
 TRAIN_SIZE = 400
-TEST_SIZE = 200
+TEST_SIZE = 5000
 BATCH_SIZE = 4
 GRAD_ACCUMULATION_STEPS = 4
 NUM_EPOCHS = 3
 OPTIMIZER = "adamw"
 # MLX는 Epoch 대신 Iteration 단위를 기본으로 사용함
-MAX_ITERS = (TRAIN_SIZE // (BATCH_SIZE * GRAD_ACCUMULATION_STEPS)) * NUM_EPOCHS 
+MAX_ITERS = (TRAIN_SIZE // (BATCH_SIZE * GRAD_ACCUMULATION_STEPS)) * NUM_EPOCHS
+NUM_LAYERS = -1 # all layers
+
 
 DATA_DIR = f"{ROOT_DIR}/data_mlx"
 ADAPTER_PATH = f"{ROOT_DIR}/saved_model_squad_mlx_r{LORA_R}"
@@ -146,7 +148,7 @@ def prepare_data_and_train():
         "--fine-tune-type", "lora",
         "--batch-size", str(BATCH_SIZE),
         "--grad-accumulation-steps", str(GRAD_ACCUMULATION_STEPS),
-        "--num-layers", "-1", # all layers
+        "--num-layers", str(NUM_LAYERS), # all layers
         "--optimizer", OPTIMIZER,
         "--iters", str(MAX_ITERS),
         "--learning-rate", str(LEARNING_RATE),
@@ -236,6 +238,15 @@ def run_evaluation():
 
     print("\n" + "="*70)
     print("📊 평가 결과 요약 (F1 Score %)")
+    print(f"\n⚙️ [CONFIG] Hyperparameters:")
+    print(f"   - Model: {MODEL_ID}")
+    print(f"   - LoRA R: {LORA_R}, Alpha: {LORA_ALPHA}")
+    print(f"   - Learning Rate: {LEARNING_RATE}")
+    print(f"   - Epochs: {NUM_EPOCHS}, Batch Size: {BATCH_SIZE * GRAD_ACCUMULATION_STEPS}")
+    print(f"   - Train Size: {TRAIN_SIZE}, Test Size: {TEST_SIZE}")
+    print(f"   - Optimizer: {OPTIMIZER}")
+    print(f"   - Strategy: Layers: {"all layers" if NUM_LAYERS == -1 else NUM_LAYERS} | ")
+
     print("="*70)
     print(f"{'Category':<20} | {'Base Model F1':<15} | {'SFT Model F1':<15}")
     print("-" * 70)
