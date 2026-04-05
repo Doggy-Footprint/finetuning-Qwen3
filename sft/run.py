@@ -31,7 +31,7 @@ LORA_SCALE = 2.0
 LEARNING_RATE = 4e-5
 
 TRAINING_DATASET_SIZE = 400 # 🌟🌟🌟🌟🌟
-TEST_DATASET_SIZE = 5000 # 🌟🌟🌟🌟🌟
+TEST_DATASET_SIZE = 2000 # 🌟🌟🌟🌟🌟
 DATA_COMPOSITION_RATIO = 0.33 # unanswerable / total
 
 BATCH_SIZE = 4
@@ -59,7 +59,7 @@ RESULT_PATH = f"{ROOT_DIR}/results/{get_hyp()}.json"
 CONFIG_FILE = f"{ROOT_DIR}/sft_config.yaml"
 
 # Inferencing batch
-INFER_BATCH_SIZE = 40
+INFER_BATCH_SIZE = 50
 
 # PROMPT
 SYSTEM_PROMPT = """Use the provided [context] to answer the [question] as [answer], and write the part used from the [context] as [reference]. If you cannot answer the [question] based on the provided [context], answer "{target}" for [answer], and leave [reference] empty."""
@@ -113,7 +113,7 @@ def prepare_data():
     os.makedirs(DATA_DIR, exist_ok=True)
 
     raw_dataset = load_dataset("squad_v2", split="train")
-
+    # TODO: filter too long data
     answerable = raw_dataset.filter(lambda x: len(x["answers"]["text"]) > 0)
     unanswerable = raw_dataset.filter(lambda x: len(x["answers"]["text"]) == 0)
 
@@ -187,7 +187,7 @@ def prepare_hyp_params():
             "name": LR_SCHEDULE,
             "warmup": int(WARMUP_RATIO * ALL_ITERS),
             "warmup_init": WARMUP_LEARNING_RATE,
-            "arguments": [LEARNING_RATE, ALL_ITERS, WARMUP_RATIO]
+            "arguments": [LEARNING_RATE, ALL_ITERS, WARMUP_LEARNING_RATE]
         },
         "grad_checkpoint": GRAD_CHECKPOINT,
         # Monitoring
@@ -318,7 +318,7 @@ def run_evaluation():
 
     final_output = {"summary_metrics": metrics, "detailed_results": results}
 
-    os.makedirs(RESULT_PATH, exist_ok=True)
+    os.makedirs(f'{ROOT_DIR}/results', exist_ok=True)
     with open(RESULT_PATH, "w", encoding="utf-8") as f:
         json.dump(final_output, f, ensure_ascii=False, indent=4)
 
