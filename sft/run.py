@@ -28,10 +28,10 @@ MODEL_ID = "Qwen/Qwen3-0.6B"
 LORA_R = 32
 LORA_DROPOUT = 0.05
 LORA_SCALE = 2.0
-LEARNING_RATE = 4e-5
+LEARNING_RATE = 2e-5
 
-TRAINING_DATASET_SIZE = 400 # 🌟🌟🌟🌟🌟
-TEST_DATASET_SIZE = 2000 # 🌟🌟🌟🌟🌟
+TRAINING_DATASET_SIZE = 500 # 🌟🌟🌟🌟🌟
+TEST_DATASET_SIZE = 2200 # 🌟🌟🌟🌟🌟
 DATA_COMPOSITION_RATIO = 0.33 # unanswerable / total
 
 BATCH_SIZE = 4
@@ -55,11 +55,12 @@ ITERS = (TRAINING_DATASET_SIZE // (BATCH_SIZE * GRAD_ACCUMULATION_STEPS))
 ALL_ITERS = ITERS * NUM_EPOCHS
 DATA_DIR = f"{ROOT_DIR}/data"
 ADAPTER_PATH = f"{ROOT_DIR}/adapters/{get_hyp()}"
+LOSS_FILE = f"{ADAPTER_PATH}/loss_history.json"
 RESULT_PATH = f"{ROOT_DIR}/results/{get_hyp()}.json"
 CONFIG_FILE = f"{ROOT_DIR}/sft_config.yaml"
 
 # Inferencing batch
-INFER_BATCH_SIZE = 50
+INFER_BATCH_SIZE = 40
 
 # PROMPT
 SYSTEM_PROMPT = """Use the provided [context] to answer the [question] as [answer], and write the part used from the [context] as [reference]. If you cannot answer the [question] based on the provided [context], answer "{target}" for [answer], and leave [reference] empty."""
@@ -211,10 +212,26 @@ def train():
         "-c", CONFIG_FILE
     ]
 
+    loss_history = []
+
     print("\n🚀 [TRAIN] SFT 파인튜닝 프로세스 시작...")
-    subprocess.run(train_command, check=True)
+    with subprocess.Popen(train_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as process:
+        for line in process.stdout:
+            print(line, end='')
+
+            match = re.search(r'Iter\s+(\d+):\s+(?:Train|Val)\s+loss\s+([0-9.]+)')
+            if match:
+                loss_history.append({
+                    'iter': int(match.group(1)),
+                    'loss': float(match.group(2))
+                })
+    if process.returncode != 0:
+        raise subprocess.CalledProcessError(process.returncode, train_command)
 
     os.makedirs(ADAPTER_PATH, exist_ok=True)
+
+    with open(LOSS_FILE, "w", encoding="utf-8") as f:
+        json.dump(loss_history, f, indent=4)
     shutil.copy2(CONFIG_FILE, os.path.join(ADAPTER_PATH, "training_config.yaml"))
 
     print(f"✅ 학습 완료! LoRA 어댑터가 {ADAPTER_PATH} 에 저장되었습니다.")
@@ -277,7 +294,7 @@ def run_evaluation():
             ans_base, ref_base = format_output(base_res)
             ans_sft, ref_sft = format_output(sft_res)
 
-            f1_base = get_squad2_f1_score(data["gold_answers"], ans_base) if ans_base else 0.0
+            f1_base = get_squad2_f1_score(data["gold_answers"], ans_base) if ans_base else get_squad2_f1_score(data["gold_answers"], base_res) # base model이 formatting을 전혀 못해서 평가 불가.
             f1_sft = get_squad2_f1_score(data["gold_answers"], ans_sft) if ans_sft else 0.0
 
             q_type = data['type']
