@@ -59,7 +59,7 @@ RESULT_PATH = f"{ROOT_DIR}/results/{get_hyp()}.json"
 CONFIG_FILE = f"{ROOT_DIR}/sft_config.yaml"
 
 # Inferencing batch
-INFER_BATCH_SIZE = 4
+INFER_BATCH_SIZE = 40
 
 # PROMPT
 SYSTEM_PROMPT = """Use the provided [context] to answer the [question] as [answer], and write the part used from the [context] as [reference]. If you cannot answer the [question] based on the provided [context], answer "{target}" for [answer], and leave [reference] empty."""
@@ -118,7 +118,7 @@ def prepare_data():
     unanswerable = raw_dataset.filter(lambda x: len(x["answers"]["text"]) == 0)
 
     answerable_size = int((TRAINING_DATASET_SIZE + TEST_DATASET_SIZE) * (1 - DATA_COMPOSITION_RATIO))
-    unanswerable_size = int((TRAINING_DATASET_SIZE + TEST_DATASET_SIZE) * (DATA_COMPOSITION_RATIO))
+    unanswerable_size = TRAINING_DATASET_SIZE + TEST_DATASET_SIZE - answerable_size
 
     selected_answerable = answerable.shuffle(seed=SEED).select(range(answerable_size))
     selected_unanswerable = unanswerable.shuffle(seed=SEED).select(range(unanswerable_size))
@@ -260,20 +260,20 @@ def run_evaluation():
         "answerable": {"base_f1": 0.0, "sft_f1": 0.0, "count": 0}
     }
     
-    for batch in testing_samples:
+    for _, batch in enumerate(tqdm(testing_samples, desc='Evaluating SFT trained model over base model')):
         messages = [[
             {"role": "system", "content": SYSTEM_PROMPT.format(target=TARGET_SENTENCE)},
             {"role": "user", "content": f"[context]: {chat['context']}\n[question]: {chat['question']}"}
         ] for chat in batch]
 
-        prompts = [base_tokenizer.apply_chat_template(msg, tokenize=False, add_generation_prompt=True, enable_thinking=False) for msg in messages]
+        prompts = [base_tokenizer.apply_chat_template(msg, tokenize=True, add_generation_prompt=True, enable_thinking=False) for msg in messages]
 
-        sampler = make_sampler(temp = 0.1)
+        sampler = make_sampler(temp = 0.2)
 
         base_responses = batch_generate(base_model, base_tokenizer, prompts, max_tokens=200, sampler=sampler)
-        sft_responses = batch_generate(sft_model, sft_tokenizer, prompts, max_tokens=200, temp=0.1)
+        sft_responses = batch_generate(sft_model, sft_tokenizer, prompts, max_tokens=200, sampler=sampler)
 
-        for base_res, sft_res, data in zip(base_responses, sft_responses, batch):
+        for base_res, sft_res, data in zip(base_responses.texts, sft_responses.texts, batch):
             ans_base, ref_base = format_output(base_res)
             ans_sft, ref_sft = format_output(sft_res)
 
@@ -317,6 +317,8 @@ def run_evaluation():
     print("="*70)
 
     final_output = {"summary_metrics": metrics, "detailed_results": results}
+
+    os.makedirs(RESULT_PATH, exist_ok=True)
     with open(RESULT_PATH, "w", encoding="utf-8") as f:
         json.dump(final_output, f, ensure_ascii=False, indent=4)
 

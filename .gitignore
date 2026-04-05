@@ -12,3 +12,4 @@ csvs
 sft/adapters
 sft/data
 sft_config.yaml
+sft/results
