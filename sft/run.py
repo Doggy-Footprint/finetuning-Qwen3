@@ -30,13 +30,13 @@ LORA_DROPOUT = 0.05
 LORA_SCALE = 2.0
 LEARNING_RATE = 2e-5
 
-TRAINING_DATASET_SIZE = 500 # 🌟🌟🌟🌟🌟
-TEST_DATASET_SIZE = 2200 # 🌟🌟🌟🌟🌟
+TRAINING_DATASET_SIZE =1500 # 🌟🌟🌟🌟🌟
+TEST_DATASET_SIZE = 4000 # 🌟🌟🌟🌟🌟
 DATA_COMPOSITION_RATIO = 0.33 # unanswerable / total
 
 BATCH_SIZE = 4
 GRAD_ACCUMULATION_STEPS = 4
-NUM_EPOCHS = 3
+NUM_EPOCHS = 1
 
 NUM_LAYERS = -1 # all layers
 MAX_SEQ_LENGTH = 800
@@ -60,7 +60,7 @@ RESULT_PATH = f"{ROOT_DIR}/results/{get_hyp()}.json"
 CONFIG_FILE = f"{ROOT_DIR}/sft_config.yaml"
 
 # Inferencing batch
-INFER_BATCH_SIZE = 40
+INFER_BATCH_SIZE = 30
 
 # PROMPT
 SYSTEM_PROMPT = """Use the provided [context] to answer the [question] as [answer], and write the part used from the [context] as [reference]. If you cannot answer the [question] based on the provided [context], answer "{target}" for [answer], and leave [reference] empty."""
@@ -219,7 +219,7 @@ def train():
         for line in process.stdout:
             print(line, end='')
 
-            match = re.search(r'Iter\s+(\d+):\s+(?:Train|Val)\s+loss\s+([0-9.]+)')
+            match = re.search(r'Iter\s+(\d+):\s+(?:Train|Val)\s+loss\s+([0-9.]+)', line)
             if match:
                 loss_history.append({
                     'iter': int(match.group(1)),
@@ -363,6 +363,13 @@ def main():
         elif choice == "3":
             train()
             run_evaluation()
+            break
+        elif choice == "4":
+            for rl in [1e-5, 2e-5, 3e-5, 4e-5, 5e-5]:
+                LEARNING_RATE = rl
+                print(f"\n--- learning rate {rl}에 대해 학습 및 평가를 진행합니다. ---")
+                train()
+                run_evaluation()
             break
         elif choice == "0":
             print("프로그램을 종료합니다.")
