@@ -77,9 +77,7 @@ def get_paths(config):
     root_dir = config["ROOT_DIR"]
     hyp_name = get_hyp_name(config)
     
-    # 데이터 크기별로 데이터셋 디렉토리 분리 (재사용 목적)
-    data_dir_name = f"data_tr{config['TRAINING_DATASET_SIZE']}_te{config['TEST_DATASET_SIZE']}"
-    data_dir = os.path.join(root_dir, "data", data_dir_name)
+    data_dir = os.path.join(root_dir, "data")
     
     return {
         "ROOT_DIR": root_dir,
@@ -95,11 +93,6 @@ def get_paths(config):
 # ==========================================
 def prepare_data(config, paths):
     data_dir = paths["DATA_DIR"]
-    
-    # 이미 데이터가 존재하면 스킵
-    # if os.path.exists(os.path.join(data_dir, "train.jsonl")) and os.path.exists(os.path.join(data_dir, "valid.jsonl")):
-    #     print(f"✅ 데이터셋이 이미 존재합니다. (경로: {data_dir})")
-    #     return
 
     os.makedirs(data_dir, exist_ok=True)
     raw_dataset = load_dataset("squad_v2", split="train")
