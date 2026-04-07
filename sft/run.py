@@ -71,7 +71,7 @@ def format_output(response):
         return None, None
 
 def get_hyp_name(config):
-    return f"r{config['LORA_R']}_dr{config['LORA_DROPOUT']}_lr{config['LEARNING_RATE']}_tr{config['TRAINING_DATASET_SIZE']}_ep{config['NUM_EPOCHS']}"
+    return f"r{config['LORA_R']}_dr{config['LORA_DROPOUT']}_lr{config['LEARNING_RATE']}_tr{config['TRAINING_DATASET_SIZE']}_comp{config['DATA_COMPOSITION_RATIO']}_ep{config['NUM_EPOCHS']}"
 
 def get_paths(config):
     root_dir = config["ROOT_DIR"]
