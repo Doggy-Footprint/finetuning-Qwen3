@@ -36,7 +36,7 @@ DATA_COMPOSITION_RATIO = 0.33 # unanswerable / total
 
 BATCH_SIZE = 4
 GRAD_ACCUMULATION_STEPS = 4
-NUM_EPOCHS = 1
+NUM_EPOCHS = 3
 
 NUM_LAYERS = -1 # all layers
 MAX_SEQ_LENGTH = 800
@@ -76,25 +76,35 @@ def normalize_answer(s):
     def lower(text): return text.lower()
     return white_space_fix(remove_articles(remove_punc(lower(s))))
 
-def calculate_f1(truth, sentence):
+def calculate_scores(truth, sentence):
     truth_toks = normalize_answer(truth).split()
     sentence_toks = normalize_answer(sentence).split()
 
     if len(truth_toks) == 0 or len(sentence_toks) == 0:
-        return int(truth_toks == sentence_toks)
+        score = 1.0 if truth_toks == sentence_toks else 0.0
+        return score, score, score # precision, recall, f1
 
     common = collections.Counter(truth_toks) & collections.Counter(sentence_toks)
     num_same = sum(common.values())
 
-    if num_same == 0: return 0.0
+    if num_same == 0: return 0.0, 0.0, 0.0
     precision = 1.0 * num_same / len(sentence_toks)
     recall = 1.0 * num_same / len(truth_toks)
-    return (2 * precision * recall) / (precision + recall)
+    f1 = (2 * precision * recall) / (precision + recall)
+    return precision, recall, f1
 
-def get_squad2_f1_score(gold_answers, sentence):
+def get_squad2_scores(gold_answers, sentence):
     if not gold_answers: 
-        return calculate_f1(TARGET_SENTENCE, sentence) # SQuAD2 unanswerable case
-    return max(calculate_f1(a, sentence) for a in gold_answers)
+        return calculate_scores(TARGET_SENTENCE, sentence) # SQuAD2 unanswerable case
+    
+    best_scores = (0.0, 0.0, 0.0)
+    best_f1 = -1.0
+    for a in gold_answers:
+        p, r, f1 = calculate_scores(a, sentence)
+        if f1 > best_f1:
+            best_f1 = f1
+            best_scores = (p, r, f1)
+    return best_scores
 
 def format_output(response):
     pattern = r"\[answer\](.*?)\[reference\](.*)"
@@ -257,24 +267,26 @@ def run_evaluation():
         for line in f:
             data = json.loads(line)
             q_type = "unanswerable" if len(data["gold_answers"]) == 0 else "answerable"
-            if len(batch) % INFER_BATCH_SIZE == 0 and batch:
-                testing_samples.append(batch)
-                batch = []
-            else:
-                batch.append({
+
+            batch.append({
                 "context": data["context"],
                 "question": data["question"],
                 "type": q_type,
                 "gold_answers": data["gold_answers"]
             })
-        if batch:
+
+            if len(batch) == INFER_BATCH_SIZE:
+                testing_samples.append(batch)
+                batch = []
+
+        if batch: # 남은 배치 털어넣기
             testing_samples.append(batch)
-    print(f"총 {len(testing_samples)}개의 테스트 데이터를 평가합니다.")
+    print(f"총 {TEST_DATASET_SIZE}개의 테스트 데이터에 대해 평가를 진행합니다.") 
     
     results = []
     metrics = {
-        "unanswerable": {"base_f1": 0.0, "sft_f1": 0.0, "count": 0},
-        "answerable": {"base_f1": 0.0, "sft_f1": 0.0, "count": 0}
+        "unanswerable": {"base_p": 0.0, "base_r": 0.0, "base_f1": 0.0, "sft_p": 0.0, "sft_r": 0.0, "sft_f1": 0.0, "count": 0},
+        "answerable": {"base_p": 0.0, "base_r": 0.0, "base_f1": 0.0, "sft_p": 0.0, "sft_r": 0.0, "sft_f1": 0.0, "count": 0}
     }
     
     for _, batch in enumerate(tqdm(testing_samples, desc='Evaluating SFT trained model over base model')):
@@ -294,11 +306,16 @@ def run_evaluation():
             ans_base, ref_base = format_output(base_res)
             ans_sft, ref_sft = format_output(sft_res)
 
-            f1_base = get_squad2_f1_score(data["gold_answers"], ans_base) if ans_base else get_squad2_f1_score(data["gold_answers"], base_res) # base model이 formatting을 전혀 못해서 평가 불가.
-            f1_sft = get_squad2_f1_score(data["gold_answers"], ans_sft) if ans_sft else 0.0
+            # 변경: Precision, Recall, F1 모두 받아오기
+            p_base, r_base, f1_base = get_squad2_scores(data["gold_answers"], ans_base) if ans_base else get_squad2_scores(data["gold_answers"], base_res)
+            p_sft, r_sft, f1_sft = get_squad2_scores(data["gold_answers"], ans_sft) if ans_sft else (0.0, 0.0, 0.0)
 
             q_type = data['type']
+            metrics[q_type]["base_p"] += p_base
+            metrics[q_type]["base_r"] += r_base
             metrics[q_type]["base_f1"] += f1_base
+            metrics[q_type]["sft_p"] += p_sft
+            metrics[q_type]["sft_r"] += r_sft
             metrics[q_type]["sft_f1"] += f1_sft
             metrics[q_type]["count"] += 1
 
@@ -306,10 +323,12 @@ def run_evaluation():
                 "type": q_type, "question": data["question"],
                 "gold_answers": data["gold_answers"] if data["gold_answers"] else [TARGET_SENTENCE],
                 "base_prediction": base_res, "sft_prediction": sft_res,
-                "base_f1": f1_base, "sft_f1": f1_sft
+                "base_scores": {"precision": p_base, "recall": r_base, "f1": f1_base},
+                "sft_scores": {"precision": p_sft, "recall": r_sft, "f1": f1_sft}
             })
-    print("\n" + "="*70)
-    print("📊 평가 결과 요약 (F1 Score %)")
+            
+    print("\n" + "="*85)
+    print("📊 평가 결과 요약 (Precision / Recall / F1 Score %)")
     print(f"\n⚙️ [CONFIG] Hyperparameters:")
     print(f"   - Model: {MODEL_ID}")
     print(f"   - LoRA R: {LORA_R}, Scale: {LORA_SCALE}, Dropout: {LORA_DROPOUT}")
@@ -317,21 +336,35 @@ def run_evaluation():
     print(f"   - Epochs: {NUM_EPOCHS}, Batch Size: {BATCH_SIZE * GRAD_ACCUMULATION_STEPS}")
     print(f"   - Train Size: {TRAINING_DATASET_SIZE}, Test Size: {TEST_DATASET_SIZE}")
     print(f"   - Optimizer: {OPTIMIZER}")
-    print(f"   - Strategy: Layers: {"all layers" if NUM_LAYERS == -1 else NUM_LAYERS} | ")
+    print(f"   - Strategy: Layers: {'all layers' if NUM_LAYERS == -1 else NUM_LAYERS} | ")
 
-    print("="*70)
-    print(f"{'Category':<20} | {'Base Model F1':<15} | {'SFT Model F1':<15}")
-    print("-" * 70)
+    print("="*85)
+    print(f"{'Category':<15} | {'Base Model (P / R / F1)':<30} | {'SFT Model (P / R / F1)':<30}")
+    print("-" * 85)
     
     for q_type in ["unanswerable", "answerable"]:
         count = metrics[q_type]["count"]
         if count > 0:
+            avg_base_p = (metrics[q_type]["base_p"] / count) * 100
+            avg_base_r = (metrics[q_type]["base_r"] / count) * 100
             avg_base_f1 = (metrics[q_type]["base_f1"] / count) * 100
+            
+            avg_sft_p = (metrics[q_type]["sft_p"] / count) * 100
+            avg_sft_r = (metrics[q_type]["sft_r"] / count) * 100
             avg_sft_f1 = (metrics[q_type]["sft_f1"] / count) * 100
-            print(f"{q_type.capitalize():<20} | {avg_base_f1:>14.2f}% | {avg_sft_f1:>14.2f}%")
+            
+            base_str = f"{avg_base_p:>5.2f} / {avg_base_r:>5.2f} / {avg_base_f1:>5.2f}"
+            sft_str = f"{avg_sft_p:>5.2f} / {avg_sft_r:>5.2f} / {avg_sft_f1:>5.2f}"
+            
+            print(f"{q_type.capitalize():<15} | {base_str:<30} | {sft_str:<30}")
+            
+            metrics[q_type]["avg_base_p"] = avg_base_p
+            metrics[q_type]["avg_base_r"] = avg_base_r
             metrics[q_type]["avg_base_f1"] = avg_base_f1
+            metrics[q_type]["avg_sft_p"] = avg_sft_p
+            metrics[q_type]["avg_sft_r"] = avg_sft_r
             metrics[q_type]["avg_sft_f1"] = avg_sft_f1
-    print("="*70)
+    print("="*85)
 
     final_output = {"summary_metrics": metrics, "detailed_results": results}
 
@@ -340,7 +373,6 @@ def run_evaluation():
         json.dump(final_output, f, ensure_ascii=False, indent=4)
 
     print(f"✅ 전체 결과가 {RESULT_PATH} 에 저장되었습니다.")
-
 
 def main():
     print("="*50)
@@ -365,12 +397,16 @@ def main():
             run_evaluation()
             break
         elif choice == "4":
-            for rl in [1e-5, 2e-5, 3e-5, 4e-5, 5e-5]:
-                LEARNING_RATE = rl
-                print(f"\n--- learning rate {rl}에 대해 학습 및 평가를 진행합니다. ---")
-                train()
-                run_evaluation()
+            global TRAINING_DATASET_SIZE, NUM_EPOCHS
+            TRAINING_DATASET_SIZE, NUM_EPOCHS = 500, 3
+            train()
+            run_evaluation()
+
+            TRAINING_DATASET_SIZE, NUM_EPOCHS = 1500, 1
+            train()
+            run_evaluation()
             break
+
         elif choice == "0":
             print("프로그램을 종료합니다.")
             break
