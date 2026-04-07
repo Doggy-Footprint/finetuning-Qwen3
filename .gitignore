@@ -11,5 +11,6 @@ results_*/
 csvs
 sft/adapters
 sft/data
-sft_config.yaml
+sft_config*.yaml
 sft/results
+sft/sft_config

@@ -176,7 +176,7 @@ def prepare_hyp_params(config, paths):
             "arguments": [config["LEARNING_RATE"], all_iters, config["WARMUP_LEARNING_RATE"]]
         },
         "grad_checkpoint": config["GRAD_CHECKPOINT"],
-        "steps_per_report": max(1, all_iters // 10),
+        "steps_per_report": max(1, all_iters // 20),
         "save_every": iters,
         "adapter_path": paths["ADAPTER_PATH"],
     }
@@ -333,10 +333,10 @@ def update_summary_markdown(config, metrics, loss_history, paths):
     with open(md_path, "a", encoding="utf-8") as f:
         if is_new_file:
             f.write("# SFT Experiment Summary\n\n")
-            f.write("| Experiment Name | Unanswerable (Base) | Unanswerable (SFT) | Answerable (Base) | Answerable (SFT) | Loss History |\n")
-            f.write("|---|---|---|---|---|---|\n")
+            f.write("| Experiment Name | Title | Unanswerable (Base) | Unanswerable (SFT) | Answerable (Base) | Answerable (SFT) | Loss History |\n")
+            f.write("|---|---|---|---|---|---|---|\n")
         
-        f.write(f"| `{hyp_name}` | {u_base} | **{u_sft}** | {a_base} | **{a_sft}** | {loss_str} |\n")
+        f.write(f"| `{hyp_name}` | {config['TITLE']} | {u_base} | **{u_sft}** | {a_base} | **{a_sft}** | {loss_str} |\n")
 
 
 # ==========================================
@@ -362,31 +362,58 @@ def get_base_config():
         "WARMUP_RATIO": 0.1,
         "WARMUP_LEARNING_RATE": 0,
         "GRAD_CHECKPOINT": True,
-        "INFER_BATCH_SIZE": 30,
+        "INFER_BATCH_SIZE": 32,
+        "LORA_R": 32,
+        "LORA_DROPOUT": 0.05,
+        "LORA_SCALE": 2.0,
     }
 
 # 🌟🌟 여러 실험 케이스 등록 🌟🌟
 EXPERIMENT_CASES = [
     {
         **get_base_config(),
-        "LORA_R": 32,
-        "LORA_DROPOUT": 0.05,
-        "LORA_SCALE": 2.0,
         "LEARNING_RATE": 2e-5,
         "TRAINING_DATASET_SIZE": 1500,
-        "TEST_DATASET_SIZE": 4000,
-        "DATA_COMPOSITION_RATIO": 0.33,
-        "NUM_EPOCHS": 1
+        "TEST_DATASET_SIZE": 2000,
+        "DATA_COMPOSITION_RATIO": 0.35,
+        "NUM_EPOCHS": 1,
+        "TITLE": "35% 응답 불가",
     },
     {
         **get_base_config(),
-        "LORA_R": 32,  # Rank 증가 실험
-        "LORA_DROPOUT": 0.1,
-        "LORA_SCALE": 2.0,
-        "LEARNING_RATE": 2e-5, # LR 변경 실험
+        "LEARNING_RATE": 2e-5,
         "TRAINING_DATASET_SIZE": 1500,
-        "TEST_DATASET_SIZE": 4000,
-        "NUM_EPOCHS": 2
+        "TEST_DATASET_SIZE": 2000,
+        "DATA_COMPOSITION_RATIO": 0.30,
+        "NUM_EPOCHS": 1,
+        "TITLE": "30% 응답 불가",
+    },
+    {
+        **get_base_config(),
+        "LEARNING_RATE": 2e-5,
+        "TRAINING_DATASET_SIZE": 1500,
+        "TEST_DATASET_SIZE": 2000,
+        "DATA_COMPOSITION_RATIO": 0.25,
+        "NUM_EPOCHS": 1,
+        "TITLE": "25% 응답 불가",
+    },
+    {
+        **get_base_config(),
+        "LEARNING_RATE": 2e-5,
+        "TRAINING_DATASET_SIZE": 1500,
+        "TEST_DATASET_SIZE": 2000,
+        "DATA_COMPOSITION_RATIO": 0.20,
+        "NUM_EPOCHS": 1,
+        "TITLE": "20% 응답 불가",
+    },
+    {
+        **get_base_config(),
+        "LEARNING_RATE": 2e-5,
+        "TRAINING_DATASET_SIZE": 1500,
+        "TEST_DATASET_SIZE": 2000,
+        "DATA_COMPOSITION_RATIO": 0.15,
+        "NUM_EPOCHS": 1,
+        "TITLE": "15% 응답 불가",
     }
 ]
 
