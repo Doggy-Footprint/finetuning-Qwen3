@@ -36,7 +36,7 @@ DATA_COMPOSITION_RATIO = 0.33 # unanswerable / total
 
 BATCH_SIZE = 4
 GRAD_ACCUMULATION_STEPS = 4
-NUM_EPOCHS = 3
+NUM_EPOCHS = 1
 
 NUM_LAYERS = -1 # all layers
 MAX_SEQ_LENGTH = 800
@@ -94,9 +94,15 @@ def calculate_scores(truth, sentence):
     return precision, recall, f1
 
 def get_squad2_scores(gold_answers, sentence):
-    if not gold_answers: 
-        return calculate_scores(TARGET_SENTENCE, sentence) # SQuAD2 unanswerable case
-    
+    if not gold_answers:
+        norm_target = normalize_answer(TARGET_SENTENCE)
+        norm_sentence = normalize_answer(sentence)
+
+        if norm_target in norm_sentence:
+            return 1.0, 1.0, 1.0
+        else:
+            return 0.0, 0.0, 0.0
+            
     best_scores = (0.0, 0.0, 0.0)
     best_f1 = -1.0
     for a in gold_answers:
@@ -124,9 +130,9 @@ def prepare_data():
     os.makedirs(DATA_DIR, exist_ok=True)
 
     raw_dataset = load_dataset("squad_v2", split="train")
-    # TODO: filter too long data
-    answerable = raw_dataset.filter(lambda x: len(x["answers"]["text"]) > 0)
-    unanswerable = raw_dataset.filter(lambda x: len(x["answers"]["text"]) == 0)
+
+    answerable = raw_dataset.filter(lambda x: len(x["answers"]["text"]) > 0 and len(x["context"]) < MAX_SEQ_LENGTH)
+    unanswerable = raw_dataset.filter(lambda x: len(x["answers"]["text"]) == 0 and len(x["context"]) < MAX_SEQ_LENGTH)
 
     answerable_size = int((TRAINING_DATASET_SIZE + TEST_DATASET_SIZE) * (1 - DATA_COMPOSITION_RATIO))
     unanswerable_size = TRAINING_DATASET_SIZE + TEST_DATASET_SIZE - answerable_size
@@ -396,17 +402,6 @@ def main():
             train()
             run_evaluation()
             break
-        elif choice == "4":
-            global TRAINING_DATASET_SIZE, NUM_EPOCHS
-            TRAINING_DATASET_SIZE, NUM_EPOCHS = 500, 3
-            train()
-            run_evaluation()
-
-            TRAINING_DATASET_SIZE, NUM_EPOCHS = 1500, 1
-            train()
-            run_evaluation()
-            break
-
         elif choice == "0":
             print("프로그램을 종료합니다.")
             break
