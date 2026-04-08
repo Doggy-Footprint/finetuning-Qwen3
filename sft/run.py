@@ -331,6 +331,130 @@ def update_summary_markdown(config, metrics, loss_history, paths):
         
         f.write(f"| `{hyp_name}` | {config['TITLE']} | {u_base} | **{u_sft}** | {a_base} | **{a_sft}** | {loss_str} |\n")
 
+# ==========================================
+# Adversarial Testing
+# ==========================================
+def create_adversarial_batch(batch):
+    """
+    기존 평가 배치를 적대적(Adversarial) 배치로 변환합니다.
+    """
+    adv_batch = []
+    for data in batch:
+        q_type = data["type"]
+        context = data["context"]
+        question = data["question"]
+        gold_answers = data["gold_answers"]
+
+        if q_type == "answerable" and len(gold_answers) > 0:
+            # 전략 1: Answer Masking (정답 지우기)
+            # 정답을 [REDACTED]로 치환하여 대답 불가능한 상태로 만듦
+            for ans in gold_answers:
+                if ans in context:
+                    adv_context = context.replace(ans, "[REDACTED]")
+                    adv_batch.append({
+                        "adv_type": "Masking",
+                        "context": adv_context,
+                        "question": question,
+                        "type": "unanswerable", # 정답이 사라졌으므로 unanswerable 처리
+                        "gold_answers": [],
+                        "original_answer": ans
+                    })
+        elif q_type == "unanswerable":
+            # 전략 2: Distractor Injection (함정 문장 추가)
+            # 질문과 단어는 겹치지만 실제 정답은 없는 문장을 문맥 끝에 추가
+            distractor = f" People often ask about '{question.replace('?', '')}', but no factual information is provided in the official records."
+            adv_batch.append({
+                "adv_type": "Distractor",
+                "context": context + distractor,
+                "question": question,
+                "type": "unanswerable", # 여전히 unanswerable 이어야 함
+                "gold_answers": []
+            })
+    return adv_batch
+
+def run_adversarial_evaluation(config):
+    paths = get_paths(config)
+    test_data_path = os.path.join(paths["DATA_DIR"], "valid.jsonl")
+    
+    if not os.path.exists(paths["ADAPTER_PATH"]):
+        print("❌ 저장된 LoRA 모델을 찾을 수 없습니다.")
+        return
+    
+    print(f"\n🕵️‍♂️ [ADVERSARIAL EVAL] 적대적 평가 시작: {get_hyp_name(config)}")
+
+    base_model, base_tokenizer = load(config["MODEL_ID"])
+    sft_model, sft_tokenizer = load(config["MODEL_ID"], adapter_path=paths["ADAPTER_PATH"])
+
+    # 데이터 로드 (기존 평가와 동일)
+    testing_samples = []
+    with open(test_data_path, "r", encoding="utf-8") as f:
+        batch = []
+        for line in f:
+            data = json.loads(line)
+            q_type = "unanswerable" if len(data["gold_answers"]) == 0 else "answerable"
+            batch.append({
+                "context": data["context"], "question": data["question"],
+                "type": q_type, "gold_answers": data["gold_answers"]
+            })
+            if len(batch) == config["INFER_BATCH_SIZE"]:
+                testing_samples.append(batch)
+                batch = []
+        if batch:
+            testing_samples.append(batch)
+
+    adv_metrics = {
+        "Masking": {"base_fail": 0, "sft_fail": 0, "base_success": 0, "sft_success": 0, "count": 0},
+        "Distractor": {"base_fail": 0, "sft_fail": 0, "base_success": 0, "sft_success": 0, "count": 0}
+    }
+    
+    for batch in tqdm(testing_samples, desc='Running Adversarial Attacks'):
+        adv_batch = create_adversarial_batch(batch)
+        if not adv_batch:
+            continue
+
+        messages = [[
+            {"role": "system", "content": config["SYSTEM_PROMPT"].format(target=config["TARGET_SENTENCE"])},
+            {"role": "user", "content": f"[context]: {chat['context']}\n[question]: {chat['question']}"}
+        ] for chat in adv_batch]
+
+        prompts = [base_tokenizer.apply_chat_template(msg, tokenize=True, add_generation_prompt=True, enable_thinking=False) for msg in messages]
+        sampler = make_sampler(temp=0.2)
+
+        base_responses = batch_generate(base_model, base_tokenizer, prompts, max_tokens=200, sampler=sampler)
+        sft_responses = batch_generate(sft_model, sft_tokenizer, prompts, max_tokens=200, sampler=sampler)
+
+        for base_res, sft_res, data in zip(base_responses.texts, sft_responses.texts, adv_batch):
+            ans_base, _ = format_output(base_res)
+            ans_sft, _ = format_output(sft_res)
+            
+            ans_base = ans_base if ans_base else base_res
+            ans_sft = ans_sft if ans_sft else sft_res
+
+            target = normalize_answer(config["TARGET_SENTENCE"])
+            
+            # 성공(Success) 조건: 모델이 방어에 성공하여 "TARGET_SENTENCE(응답 불가)"를 반환함
+            base_success = 1 if target in normalize_answer(ans_base) else 0
+            sft_success = 1 if target in normalize_answer(ans_sft) else 0
+
+            adv_type = data["adv_type"]
+            adv_metrics[adv_type]["base_success"] += base_success
+            adv_metrics[adv_type]["base_fail"] += (1 - base_success)
+            adv_metrics[adv_type]["sft_success"] += sft_success
+            adv_metrics[adv_type]["sft_fail"] += (1 - sft_success)
+            adv_metrics[adv_type]["count"] += 1
+
+    print("\n" + "="*50)
+    print(f"🛡️ 적대적 공격 방어율 (가짜 정보/함정에 속지 않고 '모른다'고 한 비율)")
+    print("="*50)
+    for adv_type, metrics in adv_metrics.items():
+        if metrics["count"] > 0:
+            base_def_rate = (metrics["base_success"] / metrics["count"]) * 100
+            sft_def_rate = (metrics["sft_success"] / metrics["count"]) * 100
+            print(f"[{adv_type} 공격] 총 {metrics['count']}건")
+            print(f" - Base 모델 방어율: {base_def_rate:.1f}%")
+            print(f" - SFT  모델 방어율: {sft_def_rate:.1f}%")
+    print("="*50)
+
 
 # ==========================================
 # Main Execution Entry Point
@@ -435,6 +559,15 @@ def main():
                 config = EXPERIMENT_CASES[int(case_idx)-1]
                 loss_history = train(config)
                 run_evaluation(config, loss_history)
+            else:
+                print("잘못된 케이스 번호입니다.")
+            break
+        
+        elif choice == "3":
+            case_idx = input(f"적대적 평가를 실행할 케이스 번호를 입력하세요 (1 ~ {len(EXPERIMENT_CASES)}): ").strip()
+            if case_idx.isdigit() and 1 <= int(case_idx) <= len(EXPERIMENT_CASES):
+                config = EXPERIMENT_CASES[int(case_idx)-1]
+                run_adversarial_evaluation(config)
             else:
                 print("잘못된 케이스 번호입니다.")
             break
