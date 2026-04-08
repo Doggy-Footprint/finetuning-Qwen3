@@ -128,12 +128,12 @@ def prepare_data(config, paths):
                     {"role": "assistant", "content": f"[answer]: {ans_text}\n[reference]: {ref_text}"}
                 ]
                 
-                formatted_text = tokenizer_hf.apply_chat_template(
-                    messages, tokenize=False, add_generation_prompt=False, enable_thinking=False
-                )
+                # formatted_text = tokenizer_hf.apply_chat_template(
+                #     messages, tokenize=False, add_generation_prompt=False, enable_thinking=False
+                # )
                 
                 json_record = {
-                    "text": formatted_text,
+                    "messages": messages,
                     "context": example["context"],
                     "question": example["question"],
                     "gold_answers": example["answers"]["text"] if len(example["answers"]["text"]) > 0 else []
@@ -210,7 +210,7 @@ def train(config):
     
     return loss_history
 
-def run_evaluation(config, loss_history=None):
+def run_evaluation(config, loss_history=None, pass_base_model=False):
     paths = get_paths(config)
     test_data_path = os.path.join(paths["DATA_DIR"], "valid.jsonl")
     
@@ -256,7 +256,7 @@ def run_evaluation(config, loss_history=None):
         prompts = [base_tokenizer.apply_chat_template(msg, tokenize=True, add_generation_prompt=True, enable_thinking=False) for msg in messages]
         sampler = make_sampler(temp=0.2)
 
-        base_responses = batch_generate(base_model, base_tokenizer, prompts, max_tokens=200, sampler=sampler)
+        base_responses = config.get('TARGET_SENTENCE') if pass_base_model else batch_generate(base_model, base_tokenizer, prompts, max_tokens=200, sampler=sampler)
         sft_responses = batch_generate(sft_model, sft_tokenizer, prompts, max_tokens=200, sampler=sampler)
 
         for base_res, sft_res, data in zip(base_responses.texts, sft_responses.texts, batch):
@@ -541,6 +541,7 @@ def main():
     print(f"등록된 실험 케이스: {len(EXPERIMENT_CASES)}개")
     print("1: 전체 케이스 순차 학습 및 평가 진행 (Train + Eval)")
     print("2: 특정 케이스 번호만 실행")
+    print("3: 적대적 평가 실행")
     print("0: 종료")
     
     while True:
@@ -550,7 +551,7 @@ def main():
             for idx, config in enumerate(EXPERIMENT_CASES):
                 print(f"\n[{idx+1}/{len(EXPERIMENT_CASES)}] 실험 시작: {get_hyp_name(config)}")
                 loss_history = train(config)
-                run_evaluation(config, loss_history)
+                run_evaluation(config, loss_history, pass_base_model=True)
             break
             
         elif choice == "2":
