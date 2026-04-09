@@ -187,7 +187,7 @@ def train(config):
     prepare_data(config, paths)
     prepare_hyp_params(config, paths)
     
-    train_command = ["python", "-m", "mlx_lm.lora", "--train", "-c", paths["CONFIG_FILE"]]
+    train_command = ["python", "-m", "mlx_lm.lora", "--train", "-c", paths["CONFIG_FILE"], "--mask-prompt"]
     loss_history = []
 
     print(f"\n🚀 [TRAIN] SFT 파인튜닝 시작: {get_hyp_name(config)}")
@@ -256,10 +256,10 @@ def run_evaluation(config, loss_history=None, pass_base_model=False):
         prompts = [base_tokenizer.apply_chat_template(msg, tokenize=True, add_generation_prompt=True, enable_thinking=False) for msg in messages]
         sampler = make_sampler(temp=0.2)
 
-        base_responses = config.get('TARGET_SENTENCE') if pass_base_model else batch_generate(base_model, base_tokenizer, prompts, max_tokens=200, sampler=sampler)
+        base_res_texts = [config.get('TARGET_SENTENCE')]*len(batch) if pass_base_model else batch_generate(base_model, base_tokenizer, prompts, max_tokens=200, sampler=sampler).texts
         sft_responses = batch_generate(sft_model, sft_tokenizer, prompts, max_tokens=200, sampler=sampler)
 
-        for base_res, sft_res, data in zip(base_responses.texts, sft_responses.texts, batch):
+        for base_res, sft_res, data in zip(base_res_texts, sft_responses.texts, batch):
             ans_base, _ = format_output(base_res)
             ans_sft, _ = format_output(sft_res)
 
