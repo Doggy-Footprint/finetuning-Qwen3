@@ -315,7 +315,7 @@ def update_summary_markdown(config, metrics, loss_history, paths):
     
     is_new_file = not os.path.exists(md_path)
     
-    loss_str = ", ".join([f"{L:.3f}" for L in loss_history]) if loss_history else "N/A"
+    loss_str = ",".join([f"{L:.3f}" for L in loss_history]) if loss_history else "N/A"
     
     u_base = f"{metrics['unanswerable'].get('avg_base_p', 0):.1f}/{metrics['unanswerable'].get('avg_base_r', 0):.1f}/{metrics['unanswerable'].get('avg_base_f1', 0):.1f}"
     u_sft = f"{metrics['unanswerable'].get('avg_sft_p', 0):.1f}/{metrics['unanswerable'].get('avg_sft_r', 0):.1f}/{metrics['unanswerable'].get('avg_sft_f1', 0):.1f}"
@@ -328,7 +328,7 @@ def update_summary_markdown(config, metrics, loss_history, paths):
             f.write("# SFT Experiment Summary\n\n")
             f.write("| Experiment Name | Title | Unanswerable (Base) | Unanswerable (SFT) | Answerable (Base) | Answerable (SFT) | Loss History |\n")
             f.write("|---|---|---|---|---|---|---|\n")
-        
+        f.write("|---|---|---|---|---|---|---|\n")
         f.write(f"| `{hyp_name}` | {config['TITLE']} | {u_base} | **{u_sft}** | {a_base} | **{a_sft}** | {loss_str} |\n")
 
 # ==========================================
