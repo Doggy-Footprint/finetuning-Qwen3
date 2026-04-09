@@ -128,10 +128,6 @@ def prepare_data(config, paths):
                     {"role": "assistant", "content": f"[answer]: {ans_text}\n[reference]: {ref_text}"}
                 ]
                 
-                # formatted_text = tokenizer_hf.apply_chat_template(
-                #     messages, tokenize=False, add_generation_prompt=False, enable_thinking=False
-                # )
-                
                 json_record = {
                     "messages": messages,
                     "context": example["context"],
@@ -169,8 +165,12 @@ def prepare_hyp_params(config, paths):
             "arguments": [config["LEARNING_RATE"], all_iters, config["WARMUP_LEARNING_RATE"]]
         },
         "grad_checkpoint": config["GRAD_CHECKPOINT"],
+        
+        # Validation Loss 및 Checkpoint 저장 설정 추가
         "steps_per_report": max(1, all_iters // 20),
-        "save_every": iters,
+        "steps_per_eval": config["EVAL_EVERY_STEPS"],  # 평가 주기
+        "val_batches": config["VAL_BATCHES"],          # 평가 시 사용할 배치 수
+        "save_every": config["SAVE_EVERY_STEPS"],      # 체크포인트 저장 주기
         "adapter_path": paths["ADAPTER_PATH"],
     }
 
@@ -188,34 +188,57 @@ def train(config):
     prepare_hyp_params(config, paths)
     
     train_command = ["python", "-m", "mlx_lm.lora", "--train", "-c", paths["CONFIG_FILE"], "--mask-prompt"]
-    loss_history = []
+    
+    train_loss_history = []
+    val_loss_history = []
 
     print(f"\n🚀 [TRAIN] SFT 파인튜닝 시작: {get_hyp_name(config)}")
     with subprocess.Popen(train_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as process:
         for line in process.stdout:
             print(line, end='')
-            match = re.search(r'Iter\s+(\d+):\s+(?:Train|Val)\s+loss\s+([0-9.]+)', line)
-            if match:
-                loss_history.append(float(match.group(2)))
+            
+            # Train loss 추출 (정규식 업데이트)
+            train_match = re.search(r'Iter\s+(\d+):\s+Train\s+loss\s+([0-9.]+)', line)
+            if train_match:
+                train_loss_history.append(float(train_match.group(2)))
+                
+            # Val loss 추출 (정규식 업데이트)
+            val_match = re.search(r'Iter\s+(\d+):\s+Val\s+loss\s+([0-9.]+)', line)
+            if val_match:
+                val_loss_history.append(float(val_match.group(2)))
                 
     if process.returncode != 0:
         raise subprocess.CalledProcessError(process.returncode, train_command)
 
     os.makedirs(paths["ADAPTER_PATH"], exist_ok=True)
+    
+    # Train과 Val Loss를 딕셔너리로 묶어서 저장
+    loss_data = {
+        "train_loss": train_loss_history,
+        "val_loss": val_loss_history
+    }
+    
     with open(os.path.join(paths["ADAPTER_PATH"], "loss_history.json"), "w", encoding="utf-8") as f:
-        json.dump(loss_history, f, indent=4)
+        json.dump(loss_data, f, indent=4)
         
     shutil.copy2(paths["CONFIG_FILE"], os.path.join(paths["ADAPTER_PATH"], "training_config.yaml"))
-    print(f"✅ 학습 완료! LoRA 어댑터 저장 위치: {paths['ADAPTER_PATH']}")
+    print(f"✅ 학습 완료! LoRA 어댑터 및 체크포인트 저장 위치: {paths['ADAPTER_PATH']}")
     
-    return loss_history
+    return loss_data
 
-def run_evaluation(config, loss_history=None, pass_base_model=False):
+def run_evaluation(config, loss_history=None, pass_base_model=False, specific_checkpoint=None):
     paths = get_paths(config)
     test_data_path = os.path.join(paths["DATA_DIR"], "valid.jsonl")
     
-    if not os.path.exists(paths["ADAPTER_PATH"]) or not os.path.exists(test_data_path):
-        print("❌ 저장된 모델이나 테스트 데이터를 찾을 수 없습니다. 학습을 먼저 진행해주세요.")
+    # 특정 체크포인트(예: 0000100_adapters.safetensors)를 평가할지, 최종본을 평가할지 선택
+    adapter_path = paths["ADAPTER_PATH"]
+    if specific_checkpoint:
+        print(f"⚠️ 특정 체크포인트를 사용합니다: {specific_checkpoint}")
+        # mlx-lm은 어댑터 디렉토리를 주면 내부 safetensors를 읽으므로, 경로를 재지정
+        adapter_path = os.path.join(paths["ADAPTER_PATH"], specific_checkpoint)
+    
+    if not os.path.exists(adapter_path) or not os.path.exists(test_data_path):
+        print(f"❌ 저장된 모델({adapter_path})이나 테스트 데이터를 찾을 수 없습니다. 학습을 먼저 진행해주세요.")
         return
     
     print(f"\n🚀 [EVAL] MLX 추론 평가 시작: {get_hyp_name(config)}")
@@ -275,6 +298,9 @@ def run_evaluation(config, loss_history=None, pass_base_model=False):
             metrics[q_type]["sft_f1"] += f1_sft
             metrics[q_type]["count"] += 1
 
+            if pass_base_model:
+                p_base, r_base, f1_base = "N/A", "N/A", "N/A"
+
             results.append({
                 "type": q_type, "question": data["question"],
                 "gold_answers": data["gold_answers"] if data["gold_answers"] else [config["TARGET_SENTENCE"]],
@@ -283,14 +309,12 @@ def run_evaluation(config, loss_history=None, pass_base_model=False):
                 "sft_scores": {"precision": p_sft, "recall": r_sft, "f1": f1_sft}
             })
             
-    # 평균 계산
     for q_type in ["unanswerable", "answerable"]:
         count = metrics[q_type]["count"]
         if count > 0:
             for key in ["base_p", "base_r", "base_f1", "sft_p", "sft_r", "sft_f1"]:
                 metrics[q_type][f"avg_{key}"] = (metrics[q_type][key] / count) * 100
 
-    # JSON 저장
     os.makedirs(os.path.dirname(paths["RESULT_PATH"]), exist_ok=True)
     if not loss_history and os.path.exists(os.path.join(paths["ADAPTER_PATH"], "loss_history.json")):
         with open(os.path.join(paths["ADAPTER_PATH"], "loss_history.json"), "r") as f:
@@ -305,7 +329,6 @@ def run_evaluation(config, loss_history=None, pass_base_model=False):
     with open(paths["RESULT_PATH"], "w", encoding="utf-8") as f:
         json.dump(final_output, f, ensure_ascii=False, indent=4)
 
-    # Markdown 리포트 업데이트
     update_summary_markdown(config, metrics, loss_history, paths)
     print(f"✅ 전체 결과가 {paths['RESULT_PATH']} 및 Markdown 리포트에 저장되었습니다.")
 
@@ -314,8 +337,9 @@ def update_summary_markdown(config, metrics, loss_history, paths):
     hyp_name = get_hyp_name(config)
     
     is_new_file = not os.path.exists(md_path)
-    
-    loss_str = ",".join([f"{L:.3f}" for L in loss_history]) if loss_history else "N/A"
+
+    train_loss_history = ",".join([f"{L:.3f}" for L in loss_history.get('train_loss')]) if loss_history.get('train_loss') else "N/A"
+    val_loss_history = ",".join([f"{L:.3f}" for L in loss_history.get('val_loss')]) if loss_history.get('val_loss') else "N/A"
     
     u_base = f"{metrics['unanswerable'].get('avg_base_p', 0):.1f}/{metrics['unanswerable'].get('avg_base_r', 0):.1f}/{metrics['unanswerable'].get('avg_base_f1', 0):.1f}"
     u_sft = f"{metrics['unanswerable'].get('avg_sft_p', 0):.1f}/{metrics['unanswerable'].get('avg_sft_r', 0):.1f}/{metrics['unanswerable'].get('avg_sft_f1', 0):.1f}"
@@ -326,18 +350,55 @@ def update_summary_markdown(config, metrics, loss_history, paths):
     with open(md_path, "a", encoding="utf-8") as f:
         if is_new_file:
             f.write("# SFT Experiment Summary\n\n")
-            f.write("| Experiment Name | Title | Unanswerable (Base) | Unanswerable (SFT) | Answerable (Base) | Answerable (SFT) | Loss History |\n")
-            f.write("|---|---|---|---|---|---|---|\n")
-        f.write("|---|---|---|---|---|---|---|\n")
-        f.write(f"| `{hyp_name}` | {config['TITLE']} | {u_base} | **{u_sft}** | {a_base} | **{a_sft}** | {loss_str} |\n")
+            f.write("| Experiment Name | Title | Unanswerable (Base) | Unanswerable (SFT) | Answerable (Base) | Answerable (SFT) | Train Loss History |  Val Loss History |\n")
+        f.write("|---|---|---|---|---|---|---|---|\n")
+        f.write(f"| `{hyp_name}` | {config['TITLE']} | {u_base} | **{u_sft}** | {a_base} | **{a_sft}** | {train_loss_history} | {val_loss_history} |\n")
+
+# ==========================================
+# MMLU Benchmark Evaluation
+# ==========================================
+def run_mmlu_evaluation(config):
+    """
+    lm-evaluation-harness를 사용하여 MMLU 벤치마크를 수행합니다.
+    주의: 터미널 환경에 `pip install lm-eval`이 설치되어 있어야 합니다.
+    """
+    paths = get_paths(config)
+    adapter_path = paths["ADAPTER_PATH"]
+    
+    if not os.path.exists(adapter_path):
+        print("❌ 저장된 LoRA 어댑터를 찾을 수 없습니다. 학습을 먼저 진행해주세요.")
+        return
+
+    print(f"\n🧠 [MMLU EVAL] 일반화 성능 평가 시작: {get_hyp_name(config)}")
+    print("이 작업은 모델의 망각(Catastrophic Forgetting) 여부를 확인하기 위해 실행되며, 다소 시간이 소요될 수 있습니다.")
+    
+    # lm-eval 명령어 구성 (MLX 공식 지원 포맷)
+    model_args = f"pretrained={config['MODEL_ID']},peft={adapter_path}"
+    
+    # 0.6B 모델이므로 전체 MMLU가 부담스러울 경우 mmlu_abstract_algebra 등 특정 태스크만 돌리거나, fewshot을 줄일 수 있음.
+    # 여기서는 빠른 테스트를 위해 fewshot=0 으로 세팅.
+    mmlu_command = [
+        "lm_eval",
+        "--model", "mlx_lm",
+        "--model_args", model_args,
+        "--tasks", "mmlu",
+        "--num_fewshot", "0",
+        "--batch_size", "4"
+    ]
+    
+    try:
+        subprocess.run(mmlu_command, check=True)
+    except FileNotFoundError:
+        print("\n❌ `lm_eval` 명령어를 찾을 수 없습니다. 터미널에서 다음 명령어로 설치해주세요:")
+        print("pip install lm-eval")
+    except subprocess.CalledProcessError as e:
+        print(f"\n❌ MMLU 평가 중 오류가 발생했습니다: {e}")
+
 
 # ==========================================
 # Adversarial Testing
 # ==========================================
 def create_adversarial_batch(batch):
-    """
-    기존 평가 배치를 적대적(Adversarial) 배치로 변환합니다.
-    """
     adv_batch = []
     for data in batch:
         q_type = data["type"]
@@ -455,7 +516,6 @@ def run_adversarial_evaluation(config):
             print(f" - SFT  모델 방어율: {sft_def_rate:.1f}%")
     print("="*50)
 
-
 # ==========================================
 # Main Execution Entry Point
 # ==========================================
@@ -483,6 +543,11 @@ def get_base_config():
         "LORA_R": 32,
         "LORA_DROPOUT": 0.05,
         "LORA_SCALE": 2.0,
+        
+        # 🌟 새로 추가된 Validation & Checkpoint 관련 파라미터 🌟
+        "EVAL_EVERY_STEPS": 50,    # 50 스텝마다 Validation Loss 평가
+        "VAL_BATCHES": 20,         # 평가 시 20 배치를 사용 (약 80개의 검증 데이터 기준)
+        "SAVE_EVERY_STEPS": 100,   # 100 스텝마다 체크포인트 저장 (overfitting 모니터링 용도)
     }
 
 # 🌟🌟 여러 실험 케이스 등록 🌟🌟
@@ -490,7 +555,7 @@ EXPERIMENT_CASES = [
     {
         **get_base_config(),
         "LEARNING_RATE": 2e-5,
-        "TRAINING_DATASET_SIZE": 1500,
+        "TRAINING_DATASET_SIZE": 2000,
         "TEST_DATASET_SIZE": 2000,
         "DATA_COMPOSITION_RATIO": 0.35,
         "NUM_EPOCHS": 1,
@@ -542,6 +607,7 @@ def main():
     print("1: 전체 케이스 순차 학습 및 평가 진행 (Train + Eval)")
     print("2: 특정 케이스 번호만 실행")
     print("3: 적대적 평가 실행")
+    print("4: 🧠 MMLU 벤치마크 평가 (lm-eval 필요)")
     print("0: 종료")
     
     while True:
@@ -569,6 +635,15 @@ def main():
             if case_idx.isdigit() and 1 <= int(case_idx) <= len(EXPERIMENT_CASES):
                 config = EXPERIMENT_CASES[int(case_idx)-1]
                 run_adversarial_evaluation(config)
+            else:
+                print("잘못된 케이스 번호입니다.")
+            break
+            
+        elif choice == "4":
+            case_idx = input(f"MMLU를 실행할 케이스 번호를 입력하세요 (1 ~ {len(EXPERIMENT_CASES)}): ").strip()
+            if case_idx.isdigit() and 1 <= int(case_idx) <= len(EXPERIMENT_CASES):
+                config = EXPERIMENT_CASES[int(case_idx)-1]
+                run_mmlu_evaluation(config)
             else:
                 print("잘못된 케이스 번호입니다.")
             break
