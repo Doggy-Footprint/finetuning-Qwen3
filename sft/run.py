@@ -338,6 +338,8 @@ def run_evaluation(config, loss_history=None, pass_base_model=False, specific_ch
     with open(paths["RESULT_PATH"], "w", encoding="utf-8") as f:
         json.dump(final_output, f, ensure_ascii=False, indent=4)
 
+    with open(paths["MD_SUMMARY_PATH"], "a", encoding="utf-8") as f:
+        f.write("|---|---|---|---|---|---|---|---|\n")
     update_summary_markdown(config, metrics, loss_history, paths)
     print(f"✅ 전체 결과가 {paths['RESULT_PATH']} 및 Markdown 리포트에 저장되었습니다.")
 
@@ -362,7 +364,7 @@ def update_summary_markdown(config, metrics, loss_history, paths):
         if is_new_file:
             f.write("# SFT Experiment Summary\n\n")
             f.write("| Experiment Name | Title | Unanswerable (Base) | Unanswerable (SFT) | Answerable (Base) | Answerable (SFT) | Train Loss History |  Val Loss History |\n")
-        f.write("|---|---|---|---|---|---|---|---|\n")
+            f.write("|---|---|---|---|---|---|---|---|\n")
         f.write(f"| `{hyp_name}` | {config['TITLE']} | {u_base} | **{u_sft}** | {a_base} | **{a_sft}** | {train_loss_history} | {val_loss_history} |\n")
 
 # ==========================================
