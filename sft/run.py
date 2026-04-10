@@ -71,7 +71,7 @@ def format_output(response):
         return None, None
 
 def get_hyp_name(config):
-    return f"r{config['LORA_R']}_dr{config['LORA_DROPOUT']}_lr{config['LEARNING_RATE']}_tr{config['TRAINING_DATASET_SIZE']}_comp{config['DATA_COMPOSITION_RATIO']}_ep{config['NUM_EPOCHS']}"
+    return f"r{config['LORA_R']}_dr{config['LORA_DROPOUT']}_lr{config['LEARNING_RATE']}_tr{config['TRAINING_DATASET_SIZE']}_ep{config['NUM_EPOCHS']}_comp{config['DATA_COMPOSITION_RATIO']}_ep{config['NUM_EPOCHS']}"
 
 def get_paths(config):
     root_dir = config["ROOT_DIR"]
@@ -338,8 +338,6 @@ def run_evaluation(config, loss_history=None, pass_base_model=False, specific_ch
     with open(paths["RESULT_PATH"], "w", encoding="utf-8") as f:
         json.dump(final_output, f, ensure_ascii=False, indent=4)
 
-    with open(paths["MD_SUMMARY_PATH"], "a", encoding="utf-8") as f:
-        f.write("|---|---|---|---|---|---|---|---|\n")
     update_summary_markdown(config, metrics, loss_history, paths)
     print(f"✅ 전체 결과가 {paths['RESULT_PATH']} 및 Markdown 리포트에 저장되었습니다.")
 
@@ -558,21 +556,57 @@ def get_base_config():
         "LORA_SCALE": 2.0,
         
         # 🌟 새로 추가된 Validation & Checkpoint 관련 파라미터 🌟 # TODO
-        "EVAL_EVERY_STEPS": 50,    # 50 스텝마다 Validation Loss 평가
+        "EVAL_EVERY_STEPS": 5,    # 50 스텝마다 Validation Loss 평가
         "VAL_BATCHES": 20,         # 평가 시 20 배치를 사용 (약 80개의 검증 데이터 기준)
-        "SAVE_EVERY_STEPS": 100,   # 100 스텝마다 체크포인트 저장 (overfitting 모니터링 용도)
+        "SAVE_EVERY_STEPS": 40,   # 100 스텝마다 체크포인트 저장 (overfitting 모니터링 용도)
     }
 
 # 🌟🌟 여러 실험 케이스 등록 🌟🌟
 EXPERIMENT_CASES = [
     {
         **get_base_config(),
-        "LEARNING_RATE": 2e-5,
-        "TRAINING_DATASET_SIZE": 2000,
+        "LEARNING_RATE": 1e-5,
+        "TRAINING_DATASET_SIZE": 800,
         "TEST_DATASET_SIZE": 2000,
         "DATA_COMPOSITION_RATIO": 0.35,
         "NUM_EPOCHS": 1,
-        "TITLE": "35% 응답 불가",
+        "TITLE": "1e-5, 800, 35% 응답 불가",
+    },
+    {
+        **get_base_config(),
+        "LEARNING_RATE": 2e-5,
+        "TRAINING_DATASET_SIZE": 800,
+        "TEST_DATASET_SIZE": 2000,
+        "DATA_COMPOSITION_RATIO": 0.35,
+        "NUM_EPOCHS": 1,
+        "TITLE": "2e-5, 800, 35% 응답 불가",
+    },
+       {
+        **get_base_config(),
+        "LEARNING_RATE": 3e-5,
+        "TRAINING_DATASET_SIZE": 800,
+        "TEST_DATASET_SIZE": 2000,
+        "DATA_COMPOSITION_RATIO": 0.35,
+        "NUM_EPOCHS": 1,
+        "TITLE": "3e-5, 800, 35% 응답 불가",
+    },
+   {
+        **get_base_config(),
+        "LEARNING_RATE": 4e-5,
+        "TRAINING_DATASET_SIZE": 800,
+        "TEST_DATASET_SIZE": 2000,
+        "DATA_COMPOSITION_RATIO": 0.35,
+        "NUM_EPOCHS": 1,
+        "TITLE": "4e-5, 800, 35% 응답 불가",
+    },
+   {
+        **get_base_config(),
+        "LEARNING_RATE": 5e-5,
+        "TRAINING_DATASET_SIZE": 800,
+        "TEST_DATASET_SIZE": 2000,
+        "DATA_COMPOSITION_RATIO": 0.35,
+        "NUM_EPOCHS": 1,
+        "TITLE": "5e-5, 800, 35% 응답 불가",
     },
 ]
 
@@ -591,6 +625,10 @@ def main():
         choice = input("\n원하는 작업 번호를 입력하세요: ").strip()
         
         if choice == "1":
+            paths = get_paths(EXPERIMENT_CASES[0])
+            purpose = input("purpose of this run: ")
+            with open(paths["MD_SUMMARY_PATH"], "a", encoding="utf-8") as f:
+                f.write(f"|{purpose}|---|---|---|---|---|---|---|\n")
             for idx, config in enumerate(EXPERIMENT_CASES):
                 print(f"\n[{idx+1}/{len(EXPERIMENT_CASES)}] 실험 시작: {get_hyp_name(config)}")
                 loss_history = train(config)
