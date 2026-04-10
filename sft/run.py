@@ -189,8 +189,8 @@ def train(config):
     
     train_command = ["python", "-m", "mlx_lm.lora", "--train", "-c", paths["CONFIG_FILE"], "--mask-prompt"]
     
-    train_loss_history = []
-    val_loss_history = []
+    train_loss_history_raw = dict()
+    val_loss_history_raw = dict()
 
     print(f"\n🚀 [TRAIN] SFT 파인튜닝 시작: {get_hyp_name(config)}")
     with subprocess.Popen(train_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as process:
@@ -200,31 +200,40 @@ def train(config):
             # Train loss 추출 (정규식 업데이트)
             train_match = re.search(r'Iter\s+(\d+):\s+Train\s+loss\s+([0-9.]+)', line)
             if train_match:
-                train_loss_history.append(float(train_match.group(2)))
+                train_loss_history_raw[int(train_match.group(1))] = train_match.group(2)[:4]
                 
             # Val loss 추출 (정규식 업데이트)
             val_match = re.search(r'Iter\s+(\d+):\s+Val\s+loss\s+([0-9.]+)', line)
             if val_match:
-                val_loss_history.append(float(val_match.group(2)))
+                val_loss_history_raw[int(val_match.group(1))] = val_match.group(2)[:4]
                 
     if process.returncode != 0:
         raise subprocess.CalledProcessError(process.returncode, train_command)
 
     os.makedirs(paths["ADAPTER_PATH"], exist_ok=True)
+
+    steps = sorted(train_loss_history_raw.keys() | val_loss_history_raw.keys())
+
+    train_loss = ', '.join([str(train_loss_history_raw.get(step, '')) for step in steps])
+    val_loss = ', '.join([str(val_loss_history_raw.get(step, '')) for step in steps])
     
     # Train과 Val Loss를 딕셔너리로 묶어서 저장
-    loss_data = {
-        "train_loss": train_loss_history,
-        "val_loss": val_loss_history
+    loss_history_raw = {
+        "train_loss": train_loss_history_raw,
+        "val_loss": val_loss_history_raw,
+    }
+    loss_history = {
+        "train_loss": train_loss,
+        "val_loss": val_loss,
     }
     
     with open(os.path.join(paths["ADAPTER_PATH"], "loss_history.json"), "w", encoding="utf-8") as f:
-        json.dump(loss_data, f, indent=4)
+        json.dump(loss_history_raw, f, indent=4)
         
     shutil.copy2(paths["CONFIG_FILE"], os.path.join(paths["ADAPTER_PATH"], "training_config.yaml"))
     print(f"✅ 학습 완료! LoRA 어댑터 및 체크포인트 저장 위치: {paths['ADAPTER_PATH']}")
     
-    return loss_data
+    return loss_history
 
 def run_evaluation(config, loss_history=None, pass_base_model=False, specific_checkpoint=None):
     paths = get_paths(config)
@@ -338,8 +347,10 @@ def update_summary_markdown(config, metrics, loss_history, paths):
     
     is_new_file = not os.path.exists(md_path)
 
-    train_loss_history = ",".join([f"{L:.3f}" for L in loss_history.get('train_loss')]) if loss_history.get('train_loss') else "N/A"
-    val_loss_history = ",".join([f"{L:.3f}" for L in loss_history.get('val_loss')]) if loss_history.get('val_loss') else "N/A"
+    # train_loss_history = ",".join([f"{L:.3f}" for L in loss_history.get('train_loss')]) if loss_history.get('train_loss') else "N/A"
+    # val_loss_history = ",".join([f"{L:.3f}" for L in loss_history.get('val_loss')]) if loss_history.get('val_loss') else "N/A"
+    train_loss_history = loss_history.get('train_loss', "N/A")
+    val_loss_history = loss_history.get('val_loss', "N/A")
     
     u_base = f"{metrics['unanswerable'].get('avg_base_p', 0):.1f}/{metrics['unanswerable'].get('avg_base_r', 0):.1f}/{metrics['unanswerable'].get('avg_base_f1', 0):.1f}"
     u_sft = f"{metrics['unanswerable'].get('avg_sft_p', 0):.1f}/{metrics['unanswerable'].get('avg_sft_r', 0):.1f}/{metrics['unanswerable'].get('avg_sft_f1', 0):.1f}"
@@ -544,7 +555,7 @@ def get_base_config():
         "LORA_DROPOUT": 0.05,
         "LORA_SCALE": 2.0,
         
-        # 🌟 새로 추가된 Validation & Checkpoint 관련 파라미터 🌟
+        # 🌟 새로 추가된 Validation & Checkpoint 관련 파라미터 🌟 # TODO
         "EVAL_EVERY_STEPS": 50,    # 50 스텝마다 Validation Loss 평가
         "VAL_BATCHES": 20,         # 평가 시 20 배치를 사용 (약 80개의 검증 데이터 기준)
         "SAVE_EVERY_STEPS": 100,   # 100 스텝마다 체크포인트 저장 (overfitting 모니터링 용도)
@@ -561,42 +572,6 @@ EXPERIMENT_CASES = [
         "NUM_EPOCHS": 1,
         "TITLE": "35% 응답 불가",
     },
-    {
-        **get_base_config(),
-        "LEARNING_RATE": 2e-5,
-        "TRAINING_DATASET_SIZE": 1500,
-        "TEST_DATASET_SIZE": 2000,
-        "DATA_COMPOSITION_RATIO": 0.30,
-        "NUM_EPOCHS": 1,
-        "TITLE": "30% 응답 불가",
-    },
-    {
-        **get_base_config(),
-        "LEARNING_RATE": 2e-5,
-        "TRAINING_DATASET_SIZE": 1500,
-        "TEST_DATASET_SIZE": 2000,
-        "DATA_COMPOSITION_RATIO": 0.25,
-        "NUM_EPOCHS": 1,
-        "TITLE": "25% 응답 불가",
-    },
-    {
-        **get_base_config(),
-        "LEARNING_RATE": 2e-5,
-        "TRAINING_DATASET_SIZE": 1500,
-        "TEST_DATASET_SIZE": 2000,
-        "DATA_COMPOSITION_RATIO": 0.20,
-        "NUM_EPOCHS": 1,
-        "TITLE": "20% 응답 불가",
-    },
-    {
-        **get_base_config(),
-        "LEARNING_RATE": 2e-5,
-        "TRAINING_DATASET_SIZE": 1500,
-        "TEST_DATASET_SIZE": 2000,
-        "DATA_COMPOSITION_RATIO": 0.15,
-        "NUM_EPOCHS": 1,
-        "TITLE": "15% 응답 불가",
-    }
 ]
 
 def main():
