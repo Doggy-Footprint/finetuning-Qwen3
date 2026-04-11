@@ -608,21 +608,30 @@ EXPERIMENT_CASES = [
     {
         **get_base_config(),
         "LEARNING_RATE": 5e-6,
-        "TRAINING_DATASET_SIZE": 800,
+        "TRAINING_DATASET_SIZE": 2000,
         "TEST_DATASET_SIZE": 2000,
         "DATA_COMPOSITION_RATIO": 0.35,
         "NUM_EPOCHS": 1,
-        "TITLE": "5e-6, 800, 35% 응답 불가",
+        "TITLE": "prompt 변경 후 학습률 별 추이 확인",
     },
-    # {
-    #     **get_base_config(),
-    #     "LEARNING_RATE": 2e-5,
-    #     "TRAINING_DATASET_SIZE": 1200,
-    #     "TEST_DATASET_SIZE": 2000,
-    #     "DATA_COMPOSITION_RATIO": 0.35,
-    #     "NUM_EPOCHS": 1,
-    #     "TITLE": "2e-5, 1200, 35% 응답 불가",
-    # },
+    {
+        **get_base_config(),
+        "LEARNING_RATE": 4e-6,
+        "TRAINING_DATASET_SIZE": 2000,
+        "TEST_DATASET_SIZE": 2000,
+        "DATA_COMPOSITION_RATIO": 0.35,
+        "NUM_EPOCHS": 1,
+        "TITLE": "prompt 변경 후 학습률 별 추이 확인(2)",
+    },
+    {
+        **get_base_config(),
+        "LEARNING_RATE": 3e-6,
+        "TRAINING_DATASET_SIZE": 2000,
+        "TEST_DATASET_SIZE": 2000,
+        "DATA_COMPOSITION_RATIO": 0.35,
+        "NUM_EPOCHS": 1,
+        "TITLE": "prompt 변경 후 학습률 별 추이 확인(3)",
+    },
 ]
 
 def main():
