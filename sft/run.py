@@ -61,14 +61,25 @@ def get_squad2_scores(gold_answers, sentence, target_sentence):
     return best_scores
 
 def format_output(response):
-    pattern = r"\[answer\](.*?)\[reference\](.*)"
-    match = re.search(pattern, response, re.DOTALL)
+    # [thinking], [answer], [reference] 구조를 모두 파싱하는 정규식
+    pattern_with_thinking = r"\[thinking\](.*?)\[answer\](.*?)\[reference\](.*)"
+    # 모델이 [thinking]을 빼먹었을 경우를 대비한 Fallback 정규식
+    pattern_fallback = r"\[answer\](.*?)\[reference\](.*)"
+    
+    match = re.search(pattern_with_thinking, response, re.DOTALL | re.IGNORECASE)
     if match:
-        answer = match.group(1).strip()
-        reference = match.group(2).strip()
+        # match.group(1)은 thinking 내용이므로 평가에서는 버립니다.
+        answer = match.group(2).strip()
+        reference = match.group(3).strip()
         return answer, reference
-    else:
-        return None, None
+    
+    match_fallback = re.search(pattern_fallback, response, re.DOTALL | re.IGNORECASE)
+    if match_fallback:
+        answer = match_fallback.group(1).strip()
+        reference = match_fallback.group(2).strip()
+        return answer, reference
+        
+    return None, None
 
 def get_hyp_name(config):
     return f"r{config['LORA_R']}_dr{config['LORA_DROPOUT']}_lr{config['LEARNING_RATE']}_tr{config['TRAINING_DATASET_SIZE']}_ep{config['NUM_EPOCHS']}_comp{config['DATA_COMPOSITION_RATIO']}_ep{config['NUM_EPOCHS']}"
@@ -115,23 +126,33 @@ def prepare_data(config, paths):
         file_path = os.path.join(data_dir, file_name)
         with open(file_path, "w", encoding="utf-8") as f:
             for example in dataset_split:
+                question = example['question']
+                
+                # 정답이 없는 경우 (Unanswerable)
                 if len(example["answers"]["text"]) == 0:
                     ans_text = config["TARGET_SENTENCE"]
-                    ref_text = ''
+                    ref_text = 'none'
+                    # 모델이 학습할 '거절 논리' 주입
+                    thinking_text = f"The question asks about '{question}'. I have carefully scanned the provided context, but there is no mention or relevant information to answer this specific question. Therefore, I must refuse to answer."
+                
+                # 정답이 있는 경우 (Answerable)
                 else:
                     ans_text = example["answers"]["text"][0]
                     ref_text = ans_text
+                    # 모델이 학습할 '탐색 논리' 주입
+                    thinking_text = f"The question asks about '{question}'. Scanning the context, I found the exact information needed. The relevant part is '{ref_text}'. This directly answers the question."
 
                 messages = [
                     {"role": "system", "content": config["SYSTEM_PROMPT"].format(target=config["TARGET_SENTENCE"])},
-                    {"role": "user", "content": f"[context]: {example['context']}\n[question]: {example['question']}"},
-                    {"role": "assistant", "content": f"[answer]: {ans_text}\n[reference]: {ref_text}"}
+                    {"role": "user", "content": f"[context]: {example['context']}\n[question]: {question}"},
+                    # assistant의 응답에 [thinking] 섹션을 추가
+                    {"role": "assistant", "content": f"[thinking]\n{thinking_text}\n[answer]\n{ans_text}\n[reference]\n{ref_text}"}
                 ]
                 
                 json_record = {
                     "messages": messages,
                     "context": example["context"],
-                    "question": example["question"],
+                    "question": question,
                     "gold_answers": example["answers"]["text"] if len(example["answers"]["text"]) > 0 else []
                 }
                 f.write(json.dumps(json_record, ensure_ascii=False) + "\n")
@@ -388,7 +409,7 @@ def run_mmlu_evaluation(config, default_model=False):
     # 모델 인자 구성: mlx_lm 백엔드에서는 peft 대신 adapter_path 매개변수를 사용합니다.
     model_args = f"pretrained={config['MODEL_ID']}"
     if not default_model:
-        model_args += f",adapter_path={adapter_path}"
+        model_args += f",peft={adapter_path}"
         
     # 평가 결과를 저장할 출력 디렉토리 설정
     output_dir = os.path.join(paths["ROOT_DIR"], "results", "mmlu", hyp_name)
@@ -551,9 +572,15 @@ def get_base_config():
         "MODEL_ID": "Qwen/Qwen3-0.6B",
         
         # PROMPT
-        "SYSTEM_PROMPT": """Use the provided [context] to answer the [question] as [answer], and write the part used from the [context] as [reference]. If you cannot answer the [question] based on the provided [context], answer "{target}" for [answer], and leave [reference] empty.""",
-        "TARGET_SENTENCE": "I cannot answer this question based on the provided context.",
-        
+        "SYSTEM_PROMPT": """You are a meticulous reading comprehension AI. Your task is to answer the [question] based STRICTLY on the provided [context].
+        Always format your output EXACTLY as follows:
+        [thinking]
+        Write your step-by-step reasoning here. Identify what the question is asking, and explicitly state whether the relevant information exists in the context.
+        [answer]
+        Provide the exact answer here. If the information is missing, write exactly "{target}".
+        [reference]
+        Provide the exact wording from the context that supports your answer. If missing, write "none".""",
+        "TARGET_SENTENCE": "Insufficient information.",        
         # FIXED TRAINING PARAMS
         "BATCH_SIZE": 4,
         "GRAD_ACCUMULATION_STEPS": 4,
