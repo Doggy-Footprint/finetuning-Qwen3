@@ -257,7 +257,7 @@ def train(config):
     
     return loss_history
 
-def run_evaluation(config, loss_history=None, pass_base_model=False, specific_checkpoint=None):
+def run_evaluation(config, loss_history=None, pass_base_model=False, specific_checkpoint=None, adv_metrics=None):
     paths = get_paths(config)
     test_data_path = os.path.join(paths["DATA_DIR"], "valid.jsonl")
     
@@ -360,10 +360,10 @@ def run_evaluation(config, loss_history=None, pass_base_model=False, specific_ch
     with open(paths["RESULT_PATH"], "w", encoding="utf-8") as f:
         json.dump(final_output, f, ensure_ascii=False, indent=4)
 
-    update_summary_markdown(config, metrics, loss_history, paths)
+    update_summary_markdown(config, metrics, loss_history, paths, adv_metrics)
     print(f"✅ 전체 결과가 {paths['RESULT_PATH']} 및 Markdown 리포트에 저장되었습니다.")
 
-def update_summary_markdown(config, metrics, loss_history, paths):
+def update_summary_markdown(config, metrics, loss_history, paths, adv_metrics=None):
     md_path = paths["MD_SUMMARY_PATH"]
     hyp_name = get_hyp_name(config)
     
@@ -380,12 +380,24 @@ def update_summary_markdown(config, metrics, loss_history, paths):
     a_base = f"{metrics['answerable'].get('avg_base_p', 0):.1f}/{metrics['answerable'].get('avg_base_r', 0):.1f}/{metrics['answerable'].get('avg_base_f1', 0):.1f}"
     a_sft = f"{metrics['answerable'].get('avg_sft_p', 0):.1f}/{metrics['answerable'].get('avg_sft_r', 0):.1f}/{metrics['answerable'].get('avg_sft_f1', 0):.1f}"
 
+    adv_str = "N/A | N/A | N/A | N/A"
+    if adv_metrics:
+        m_base = f"{(adv_metrics['Masking']['base_success'] / max(adv_metrics['Masking']['count'], 1) * 100):.1f}%"
+        m_sft = f"{(adv_metrics['Masking']['sft_success'] / max(adv_metrics['Masking']['count'], 1) * 100):.1f}%"
+        d_base = f"{(adv_metrics['Distractor']['base_success'] / max(adv_metrics['Distractor']['count'], 1) * 100):.1f}%"
+        d_sft = f"{(adv_metrics['Distractor']['sft_success'] / max(adv_metrics['Distractor']['count'], 1) * 100):.1f}%"
+        adv_str = f"{m_base} | **{m_sft}** | {d_base} | **{d_sft}**"
+
     with open(md_path, "a", encoding="utf-8") as f:
         if is_new_file:
-            f.write("# SFT Experiment Summary\n\n")
-            f.write("| Experiment Name | Title | Unanswerable (Base) | Unanswerable (SFT) | Answerable (Base) | Answerable (SFT) | Train Loss History |  Val Loss History |\n")
-            f.write("|---|---|---|---|---|---|---|---|\n")
-        f.write(f"| `{hyp_name}` | {config['TITLE']} | {u_base} | **{u_sft}** | {a_base} | **{a_sft}** | {train_loss_history} | {val_loss_history} |\n")
+            setup_markdown(f)
+        # f.write(f"| `{hyp_name}` | {config['TITLE']} | {u_base} | **{u_sft}** | {a_base} | **{a_sft}** | {train_loss_history} | {val_loss_history} |\n")
+        f.write(f"| `{hyp_name}` | {config['TITLE']} | {u_base} | **{u_sft}** | {a_base} | **{a_sft}** | {adv_str} | {train_loss_history} | {val_loss_history} |\n")
+
+def setup_markdown(md_file):
+    md_file.write("# SFT Experiment Summary\n\n")
+    md_file.write("| Experiment Name | Title | Unanswerable (Base) | Unanswerable (SFT) | Answerable (Base) | Answerable (SFT) | Masking Def (Base) | Masking Def (SFT) | Distractor Def (Base) | Distractor Def (SFT) | Train Loss History | Val Loss History |\n")
+    md_file.write("|---|---|---|---|---|---|---|---|---|---|---|---|\n")        
 
 # ==========================================
 # MMLU Benchmark Evaluation
@@ -563,6 +575,8 @@ def run_adversarial_evaluation(config):
             print(f" - SFT  모델 방어율: {sft_def_rate:.1f}%")
     print("="*50)
 
+    return adv_metrics
+
 # ==========================================
 # Main Execution Entry Point
 # ==========================================
@@ -598,7 +612,7 @@ def get_base_config():
         "LORA_SCALE": 2.0,
         
         # 🌟 새로 추가된 Validation & Checkpoint 관련 파라미터 🌟 # TODO
-        "EVAL_EVERY_STEPS": 5,    # 50 스텝마다 Validation Loss 평가
+        "EVAL_EVERY_STEPS": 50,    # N 스텝마다 Validation Loss 평가
         "VAL_BATCHES": 20,         # 평가 시 20 배치를 사용 (약 80개의 검증 데이터 기준)
         "SAVE_EVERY_STEPS": 40,   # 100 스텝마다 체크포인트 저장 (overfitting 모니터링 용도)
     }
@@ -607,31 +621,58 @@ def get_base_config():
 EXPERIMENT_CASES = [
     {
         **get_base_config(),
-        "LEARNING_RATE": 5e-6,
+        "LEARNING_RATE": 1e-6,
         "TRAINING_DATASET_SIZE": 2000,
         "TEST_DATASET_SIZE": 2000,
         "DATA_COMPOSITION_RATIO": 0.35,
         "NUM_EPOCHS": 1,
         "TITLE": "prompt 변경 후 학습률 별 추이 확인",
     },
-    {
-        **get_base_config(),
-        "LEARNING_RATE": 4e-6,
-        "TRAINING_DATASET_SIZE": 2000,
-        "TEST_DATASET_SIZE": 2000,
-        "DATA_COMPOSITION_RATIO": 0.35,
-        "NUM_EPOCHS": 1,
-        "TITLE": "prompt 변경 후 학습률 별 추이 확인(2)",
-    },
-    {
-        **get_base_config(),
-        "LEARNING_RATE": 3e-6,
-        "TRAINING_DATASET_SIZE": 2000,
-        "TEST_DATASET_SIZE": 2000,
-        "DATA_COMPOSITION_RATIO": 0.35,
-        "NUM_EPOCHS": 1,
-        "TITLE": "prompt 변경 후 학습률 별 추이 확인(3)",
-    },
+    # {
+    #     **get_base_config(),
+    #     "LEARNING_RATE": 2e-6,
+    #     "TRAINING_DATASET_SIZE": 2000,
+    #     "TEST_DATASET_SIZE": 2000,
+    #     "DATA_COMPOSITION_RATIO": 0.35,
+    #     "NUM_EPOCHS": 1,
+    #     "TITLE": "prompt 변경 후 학습률 별 추이 확인(2)",
+    # },
+    # {
+    #     **get_base_config(),
+    #     "LEARNING_RATE": 3e-6,
+    #     "TRAINING_DATASET_SIZE": 2000,
+    #     "TEST_DATASET_SIZE": 2000,
+    #     "DATA_COMPOSITION_RATIO": 0.35,
+    #     "NUM_EPOCHS": 1,
+    #     "TITLE": "prompt 변경 후 학습률 별 추이 확인(3)",
+    # },
+    # {
+    #     **get_base_config(),
+    #     "LEARNING_RATE": 4e-6,
+    #     "TRAINING_DATASET_SIZE": 2000,
+    #     "TEST_DATASET_SIZE": 2000,
+    #     "DATA_COMPOSITION_RATIO": 0.35,
+    #     "NUM_EPOCHS": 1,
+    #     "TITLE": "prompt 변경 후 학습률 별 추이 확인(4)",
+    # },
+    # {
+    #     **get_base_config(),
+    #     "LEARNING_RATE": 5e-6,
+    #     "TRAINING_DATASET_SIZE": 2000,
+    #     "TEST_DATASET_SIZE": 2000,
+    #     "DATA_COMPOSITION_RATIO": 0.35,
+    #     "NUM_EPOCHS": 1,
+    #     "TITLE": "prompt 변경 후 학습률 별 추이 확인(5)",
+    # },
+    # {
+    #     **get_base_config(),
+    #     "LEARNING_RATE": 6e-6,
+    #     "TRAINING_DATASET_SIZE": 2000,
+    #     "TEST_DATASET_SIZE": 2000,
+    #     "DATA_COMPOSITION_RATIO": 0.35,
+    #     "NUM_EPOCHS": 1,
+    #     "TITLE": "prompt 변경 후 학습률 별 추이 확인(6)",
+    # },
 ]
 
 def main():
@@ -643,6 +684,7 @@ def main():
     print("2: 특정 케이스 번호만 실행")
     print("3: 적대적 평가 실행")
     print("4: 🧠 MMLU 벤치마크 평가 (lm-eval 필요)")
+    print("5: 🚀 전체 케이스 학습, 평가 및 적대적 평가 동시 진행 (Train + Eval + Adv -> MD 저장)")
     print("0: 종료")
     
     while True:
@@ -651,8 +693,8 @@ def main():
         if choice == "1":
             paths = get_paths(EXPERIMENT_CASES[0])
             purpose = input("purpose of this run: ")
-            with open(paths["MD_SUMMARY_PATH"], "a", encoding="utf-8") as f:
-                f.write(f"|{purpose}|---|---|---|---|---|---|---|\n")
+            # with open(paths["MD_SUMMARY_PATH"], "a", encoding="utf-8") as f:
+            #     f.write(f"|{purpose}|---|---|---|---|---|---|---|---|---|---|---|\n")
             for idx, config in enumerate(EXPERIMENT_CASES):
                 print(f"\n[{idx+1}/{len(EXPERIMENT_CASES)}] 실험 시작: {get_hyp_name(config)}")
                 loss_history = train(config)
@@ -688,6 +730,19 @@ def main():
                 run_mmlu_evaluation(config, default_model=True)
             else:
                 print("잘못된 케이스 번호입니다.")
+            break
+        elif choice == "5":
+            paths = get_paths(EXPERIMENT_CASES[0])
+            purpose = input("purpose of this run (Train+Eval+Adv): ")
+            # with open(paths["MD_SUMMARY_PATH"], "a", encoding="utf-8") as f:
+            #     f.write(f"|**{purpose}**|---|---|---|---|---|---|---|---|---|---|---|\n")
+            for idx, config in enumerate(EXPERIMENT_CASES):
+                print(f"\n[{idx+1}/{len(EXPERIMENT_CASES)}] 🚀 학습 시작: {get_hyp_name(config)}")
+                loss_history = train(config)
+                print(f"\n[{idx+1}/{len(EXPERIMENT_CASES)}] 🛡️ 적대적 평가 진행 중...")
+                adv_metrics = run_adversarial_evaluation(config)
+                print(f"\n[{idx+1}/{len(EXPERIMENT_CASES)}] 📊 최종 평가 및 리포트 작성 중...")
+                run_evaluation(config, loss_history, pass_base_model=True, adv_metrics=adv_metrics)
             break
             
         elif choice == "0":
