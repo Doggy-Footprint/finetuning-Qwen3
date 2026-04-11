@@ -593,7 +593,7 @@ def get_base_config():
         "WARMUP_LEARNING_RATE": 0,
         "GRAD_CHECKPOINT": True,
         "INFER_BATCH_SIZE": 32,
-        "LORA_R": 32,
+        "LORA_R": 16,
         "LORA_DROPOUT": 0.05,
         "LORA_SCALE": 2.0,
         
@@ -607,12 +607,12 @@ def get_base_config():
 EXPERIMENT_CASES = [
     {
         **get_base_config(),
-        "LEARNING_RATE": 1e-5,
-        "TRAINING_DATASET_SIZE": 1200,
+        "LEARNING_RATE": 5e-6,
+        "TRAINING_DATASET_SIZE": 800,
         "TEST_DATASET_SIZE": 2000,
         "DATA_COMPOSITION_RATIO": 0.35,
         "NUM_EPOCHS": 1,
-        "TITLE": "1e-5, 1200, 35% 응답 불가",
+        "TITLE": "5e-6, 800, 35% 응답 불가",
     },
     # {
     #     **get_base_config(),
