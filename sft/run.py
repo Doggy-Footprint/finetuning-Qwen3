@@ -368,43 +368,57 @@ def update_summary_markdown(config, metrics, loss_history, paths):
 # ==========================================
 # MMLU Benchmark Evaluation
 # ==========================================
-def run_mmlu_evaluation(config):
+def run_mmlu_evaluation(config, default_model=False):
     """
     lm-evaluation-harness를 사용하여 MMLU 벤치마크를 수행합니다.
-    주의: 터미널 환경에 `pip install lm-eval`이 설치되어 있어야 합니다.
+    (https://github.com/EleutherAI/lm-evaluation-harness/blob/main/docs/interface.md 참조)
     """
     paths = get_paths(config)
     adapter_path = paths["ADAPTER_PATH"]
     
-    if not os.path.exists(adapter_path):
+    if not default_model and not os.path.exists(adapter_path):
         print("❌ 저장된 LoRA 어댑터를 찾을 수 없습니다. 학습을 먼저 진행해주세요.")
         return
 
-    print(f"\n🧠 [MMLU EVAL] 일반화 성능 평가 시작: {get_hyp_name(config)}")
+    # 저장 경로를 구분하기 위한 실험명 추출
+    hyp_name = "default_base_model" if default_model else get_hyp_name(config)
+    print(f"\n🧠 [MMLU EVAL] 일반화 성능 평가 시작: {hyp_name}")
     print("이 작업은 모델의 망각(Catastrophic Forgetting) 여부를 확인하기 위해 실행되며, 다소 시간이 소요될 수 있습니다.")
     
-    # lm-eval 명령어 구성 (MLX 공식 지원 포맷)
-    model_args = f"pretrained={config['MODEL_ID']},peft={adapter_path}"
+    # 모델 인자 구성: mlx_lm 백엔드에서는 peft 대신 adapter_path 매개변수를 사용합니다.
+    model_args = f"pretrained={config['MODEL_ID']}"
+    if not default_model:
+        model_args += f",adapter_path={adapter_path}"
+        
+    # 평가 결과를 저장할 출력 디렉토리 설정
+    output_dir = os.path.join(paths["ROOT_DIR"], "results", "mmlu", hyp_name)
+    os.makedirs(output_dir, exist_ok=True)
     
-    # 0.6B 모델이므로 전체 MMLU가 부담스러울 경우 mmlu_abstract_algebra 등 특정 태스크만 돌리거나, fewshot을 줄일 수 있음.
-    # 여기서는 빠른 테스트를 위해 fewshot=0 으로 세팅.
+    # lm-evaluation-harness 명령어 구성
     mmlu_command = [
         "lm_eval",
-        "--model", "mlx_lm",
+        "--model", "hf",
         "--model_args", model_args,
-        "--tasks", "mmlu",
+        "--tasks", "mmlu",            # 서브태스크만 원할 경우 "mmlu_abstract_algebra,mmlu_anatomy" 형태로 지정
         "--num_fewshot", "0",
-        "--batch_size", "4"
+        "--batch_size", "auto",       # 메모리에 맞게 동적으로 배치 사이즈 자동 튜닝
+        "--output_path", output_dir,  # 결과 파일 저장 경로 지정
+        "--log_samples"               # 각 샘플에 대한 예측 결과(로그) 상세 기록
+        # "--limit", "10"             # 디버깅 용도: 태스크당 10개의 문제만 빠르게 평가할 경우 주석 해제
+        # "--apply_chat_template"     # 지시어(Instruction) 튜닝이 강하게 된 모델의 경우 주석 해제 고려
     ]
     
+    print(f"▶ 실행 명령어: {' '.join(mmlu_command)}")
+    
     try:
+        # 실시간 로그 확인을 위해 subprocess.run 사용
         subprocess.run(mmlu_command, check=True)
+        print(f"\n✅ MMLU 평가 완료. 상세 결과와 메트릭은 {output_dir} 에 저장되었습니다.")
     except FileNotFoundError:
-        print("\n❌ `lm_eval` 명령어를 찾을 수 없습니다. 터미널에서 다음 명령어로 설치해주세요:")
-        print("pip install lm-eval")
+        print("\n❌ `lm_eval` 명령어를 찾을 수 없습니다. 터미널에서 다음 명령어로 패키지가 설치되어 있는지 확인해주세요:")
+        print("pip install lm-eval") # MLX 전용 플러그인이 필요한 경우 pip install lm-eval[mlx]
     except subprocess.CalledProcessError as e:
         print(f"\n❌ MMLU 평가 중 오류가 발생했습니다: {e}")
-
 
 # ==========================================
 # Adversarial Testing
@@ -566,47 +580,20 @@ EXPERIMENT_CASES = [
     {
         **get_base_config(),
         "LEARNING_RATE": 1e-5,
-        "TRAINING_DATASET_SIZE": 800,
+        "TRAINING_DATASET_SIZE": 1200,
         "TEST_DATASET_SIZE": 2000,
         "DATA_COMPOSITION_RATIO": 0.35,
         "NUM_EPOCHS": 1,
-        "TITLE": "1e-5, 800, 35% 응답 불가",
+        "TITLE": "1e-5, 1200, 35% 응답 불가",
     },
     {
         **get_base_config(),
         "LEARNING_RATE": 2e-5,
-        "TRAINING_DATASET_SIZE": 800,
+        "TRAINING_DATASET_SIZE": 1200,
         "TEST_DATASET_SIZE": 2000,
         "DATA_COMPOSITION_RATIO": 0.35,
         "NUM_EPOCHS": 1,
-        "TITLE": "2e-5, 800, 35% 응답 불가",
-    },
-       {
-        **get_base_config(),
-        "LEARNING_RATE": 3e-5,
-        "TRAINING_DATASET_SIZE": 800,
-        "TEST_DATASET_SIZE": 2000,
-        "DATA_COMPOSITION_RATIO": 0.35,
-        "NUM_EPOCHS": 1,
-        "TITLE": "3e-5, 800, 35% 응답 불가",
-    },
-   {
-        **get_base_config(),
-        "LEARNING_RATE": 4e-5,
-        "TRAINING_DATASET_SIZE": 800,
-        "TEST_DATASET_SIZE": 2000,
-        "DATA_COMPOSITION_RATIO": 0.35,
-        "NUM_EPOCHS": 1,
-        "TITLE": "4e-5, 800, 35% 응답 불가",
-    },
-   {
-        **get_base_config(),
-        "LEARNING_RATE": 5e-5,
-        "TRAINING_DATASET_SIZE": 800,
-        "TEST_DATASET_SIZE": 2000,
-        "DATA_COMPOSITION_RATIO": 0.35,
-        "NUM_EPOCHS": 1,
-        "TITLE": "5e-5, 800, 35% 응답 불가",
+        "TITLE": "2e-5, 1200, 35% 응답 불가",
     },
 ]
 
@@ -655,10 +642,13 @@ def main():
             break
             
         elif choice == "4":
-            case_idx = input(f"MMLU를 실행할 케이스 번호를 입력하세요 (1 ~ {len(EXPERIMENT_CASES)}): ").strip()
+            case_idx = input(f"MMLU를 실행할 케이스 번호를 입력하세요 (-1 for default model) (1 ~ {len(EXPERIMENT_CASES)}): ").strip()
             if case_idx.isdigit() and 1 <= int(case_idx) <= len(EXPERIMENT_CASES):
                 config = EXPERIMENT_CASES[int(case_idx)-1]
                 run_mmlu_evaluation(config)
+            elif case_idx == "-1":
+                config = EXPERIMENT_CASES[0]
+                run_mmlu_evaluation(config, default_model=True)
             else:
                 print("잘못된 케이스 번호입니다.")
             break
