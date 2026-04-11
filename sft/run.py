@@ -216,6 +216,7 @@ def train(config):
     print(f"\n🚀 [TRAIN] SFT 파인튜닝 시작: {get_hyp_name(config)}")
     with subprocess.Popen(train_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as process:
         for line in process.stdout:
+            if 'Calculating loss...:' in line: continue
             print(line, end='')
             
             # Train loss 추출 (정규식 업데이트)
@@ -613,15 +614,15 @@ EXPERIMENT_CASES = [
         "NUM_EPOCHS": 1,
         "TITLE": "1e-5, 1200, 35% 응답 불가",
     },
-    {
-        **get_base_config(),
-        "LEARNING_RATE": 2e-5,
-        "TRAINING_DATASET_SIZE": 1200,
-        "TEST_DATASET_SIZE": 2000,
-        "DATA_COMPOSITION_RATIO": 0.35,
-        "NUM_EPOCHS": 1,
-        "TITLE": "2e-5, 1200, 35% 응답 불가",
-    },
+    # {
+    #     **get_base_config(),
+    #     "LEARNING_RATE": 2e-5,
+    #     "TRAINING_DATASET_SIZE": 1200,
+    #     "TEST_DATASET_SIZE": 2000,
+    #     "DATA_COMPOSITION_RATIO": 0.35,
+    #     "NUM_EPOCHS": 1,
+    #     "TITLE": "2e-5, 1200, 35% 응답 불가",
+    # },
 ]
 
 def main():
