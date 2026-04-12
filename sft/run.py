@@ -598,7 +598,7 @@ def get_base_config():
         "TARGET_SENTENCE": "Insufficient information.",        
         # FIXED TRAINING PARAMS
         "BATCH_SIZE": 4,
-        "GRAD_ACCUMULATION_STEPS": 4,
+        "GRAD_ACCUMULATION_STEPS": 8,
         "NUM_LAYERS": -1, # all layers
         "MAX_SEQ_LENGTH": 800,
         "OPTIMIZER": "adamw",
@@ -626,7 +626,7 @@ EXPERIMENT_CASES = [
         "TEST_DATASET_SIZE": 2000,
         "DATA_COMPOSITION_RATIO": 0.35,
         "NUM_EPOCHS": 1,
-        "TITLE": "prompt 변경 후 학습률 별 추이 확인",
+        "TITLE": "batch size 확대 (1)",
     },
     {
         **get_base_config(),
@@ -635,7 +635,7 @@ EXPERIMENT_CASES = [
         "TEST_DATASET_SIZE": 2000,
         "DATA_COMPOSITION_RATIO": 0.35,
         "NUM_EPOCHS": 1,
-        "TITLE": "prompt 변경 후 학습률 별 추이 확인(2)",
+        "TITLE": "batch size 확대 (2)",
     },
 ]
 
